@@ -8,18 +8,11 @@
     "ghcr.io/devcontainers/features/aws-cli:1": {},
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.12"
-    },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
     }
   },
-  "forwardPorts": [
-    8000,
-    5432,
-    6379
-  ],
+  "forwardPorts": [8000, 5432, 6379],
   "portsAttributes": {
     "8000": {
       "label": "FastAPI Server",
@@ -35,9 +28,6 @@
     }
   },
   "remoteUser": "vscode",
-  "mounts": [
-    "source=${localWorkspaceFolder}/.devcontainer/bashrc,target=/home/vscode/.bashrc,type=bind,consistency=cached"
-  ],
   "containerEnv": {
     "PYTHONPATH": "${containerWorkspaceFolder}/src",
     "ENV": "development",
@@ -48,10 +38,7 @@
   "remoteEnv": {
     "PATH": "${containerWorkspaceFolder}/.venv/bin:${containerWorkspaceFolder}/apps/web/node_modules/.bin:${PATH}"
   },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "postCreateCommand": "python -m venv .venv && . .venv/bin/activate && python -m pip install -U pip ruff black pytest && npm -v || true",
-  "shutdownAction": "stopContainer",
+  "postCreateCommand": "python -m venv .venv && . .venv/bin/activate && python -m pip install -U pip ruff black pytest",
   "customizations": {
     "vscode": {
       "settings": {
@@ -60,10 +47,7 @@
         "python.linting.pylintEnabled": false,
         "python.linting.flake8Enabled": false,
         "python.formatting.provider": "black",
-        "python.sortImports.args": [
-          "--profile",
-          "black"
-        ],
+        "python.sortImports.args": ["--profile", "black"],
         "python.analysis.typeCheckingMode": "strict",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
@@ -110,6 +94,5 @@
         "github.vscode-github-actions"
       ]
     }
-  },
-  "updateContentCommand": "echo 'Devcontainer listo'"
+  }
 }
