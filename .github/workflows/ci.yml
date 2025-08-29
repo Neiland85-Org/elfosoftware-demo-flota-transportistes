@@ -106,6 +106,8 @@ jobs:
 
   build-test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 25
 
     steps:
