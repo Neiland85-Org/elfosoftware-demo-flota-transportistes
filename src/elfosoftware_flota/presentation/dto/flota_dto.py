@@ -22,12 +22,12 @@ class FlotaDTO(BaseModel):
     fecha_creacion: datetime
     fecha_actualizacion: datetime
 
-    class Config:
-        """Configuración Pydantic."""
-        json_encoders = {
+    model_config = {
+        "json_encoders": {
             datetime: lambda v: v.isoformat(),
             UUID: lambda v: str(v)
         }
+    }
 
 
 class CrearFlotaDTO(BaseModel):
@@ -56,9 +56,9 @@ class FlotaResumenDTO(BaseModel):
     activo: bool
     fecha_creacion: datetime
 
-    class Config:
-        """Configuración Pydantic."""
-        json_encoders = {
+    model_config = {
+        "json_encoders": {
             datetime: lambda v: v.isoformat(),
             UUID: lambda v: str(v)
         }
+    }

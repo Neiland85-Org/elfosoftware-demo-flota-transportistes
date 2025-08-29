@@ -35,7 +35,7 @@ app.include_router(vehiculo_router, prefix="/api/v1/vehiculo", tags=["Vehiculo"]
 
 
 @app.get("/")
-async def root():
+async def root() -> dict:
     """Endpoint raíz de la API."""
     return {
         "message": "🚛 Elfosoftware Flota Transportistes API",
@@ -46,7 +46,7 @@ async def root():
 
 
 @app.get("/health")
-async def health_check():
+async def health_check() -> dict:
     """Endpoint de health check."""
     return {"status": "healthy", "service": "flota-transportistes-api"}
 
