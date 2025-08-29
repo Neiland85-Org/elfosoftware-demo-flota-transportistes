@@ -1,0 +1,46 @@
+{
+  "name": "elfosoftware-flota",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+    "ghcr.io/devcontainers/features/node:1":   { "version": "20" }
+  },
+  "containerEnv": {
+    "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "remoteEnv": {
+    "PATH": "${containerWorkspaceFolder}/.venv/bin:${containerWorkspaceFolder}/apps/web/node_modules/.bin:${PATH}"
+  },
+  "postCreateCommand": "python -m venv .venv && . .venv/bin/activate && python -m pip install -U pip ruff black pytest && npm -v || true",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "github.copilot",
+        "github.copilot-chat",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "charliermarsh.ruff",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "files.eol": "\n",
+        "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+        "python.analysis.typeCheckingMode": "strict",
+        "[python]": { "editor.defaultFormatter": "ms-python.black-formatter" },
+        "ruff.enable": true,
+        "eslint.codeActionsOnSave.rules": null,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        },
+        "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+        "prettier.useTabs": false
+      }
+    }
+  },
+  "updateContentCommand": "echo 'Devcontainer listo'"
+}
