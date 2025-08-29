@@ -67,22 +67,34 @@ jobs:
       security-events: write
       contents: read
       actions: read
-    # Solo ejecutar si hay archivos de código detectables
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.changed_files, '.py') || contains(github.event.pull_request.changed_files, '.js') || contains(github.event.pull_request.changed_files, '.ts') || contains(github.event.pull_request.changed_files, '.java') || contains(github.event.pull_request.changed_files, '.go') || contains(github.event.pull_request.changed_files, '.cpp') || contains(github.event.pull_request.changed_files, '.c') || contains(github.event.pull_request.changed_files, '.cs') || contains(github.event.pull_request.changed_files, '.rb') || contains(github.event.pull_request.changed_files, '.php')) }}
+    # Solo ejecutar si hay archivos Python reales en el proyecto
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.changed_files, '.py')) }}
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: Check for Python files
+      id: check_python
+      run: |
+        if find . -name "*.py" -type f | grep -q .; then
+          echo "has_python=true" >> $GITHUB_OUTPUT
+        else
+          echo "has_python=false" >> $GITHUB_OUTPUT
+        fi
+      
     - name: Initialize CodeQL
+      if: steps.check_python.outputs.has_python == 'true'
       uses: github/codeql-action/init@v3
       with:
         languages: python
         
     - name: Autobuild
+      if: steps.check_python.outputs.has_python == 'true'
       uses: github/codeql-action/autobuild@v3
       
     - name: Perform CodeQL Analysis
+      if: steps.check_python.outputs.has_python == 'true'
       uses: github/codeql-action/analyze@v3
 
   dependency-scan:
