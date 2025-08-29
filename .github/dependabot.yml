@@ -1,36 +1,31 @@
 version: 2
 updates:
-  # Python dependencies
+  # Enable version updates for Python packages
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
       time: "09:00"
+      timezone: "Europe/Madrid"
     open-pull-requests-limit: 10
-    reviewers:
-      - "Neiland85-Org/security"
-    assignees:
-      - "Neiland85-Org/admin"
     commit-message:
-      prefix: "security"
+      prefix: "deps"
+      prefix-development: "deps-dev"
       include: "scope"
     labels:
       - "dependencies"
-      - "security"
+      - "python"
 
-  # GitHub Actions
+  # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly" 
+      interval: "weekly"
       day: "monday"
       time: "09:00"
+      timezone: "Europe/Madrid"
     open-pull-requests-limit: 5
-    reviewers:
-      - "Neiland85-Org/devops"
-    assignees:
-      - "Neiland85-Org/admin"
     commit-message:
       prefix: "ci"
       include: "scope"
@@ -38,44 +33,39 @@ updates:
       - "github-actions"
       - "ci/cd"
 
-  # Docker dependencies
+  # Enable version updates for npm packages in web app
+  - package-ecosystem: "npm"
+    directory: "/apps/web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "web"
+
+  # Enable version updates for Docker
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "weekly"
-      day: "tuesday"
+      day: "monday"
       time: "09:00"
+      timezone: "Europe/Madrid"
     open-pull-requests-limit: 5
-    reviewers:
-      - "Neiland85-Org/infrastructure"
-    assignees:
-      - "Neiland85-Org/admin"
     commit-message:
-      prefix: "docker"
+      prefix: "build"
       include: "scope"
     labels:
       - "docker"
       - "infrastructure"
-
-  # Poetry dependencies (if using Poetry)
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "09:00"
-    open-pull-requests-limit: 10
-    target-branch: "develop"
-    reviewers:
-      - "Neiland85-Org/security"
-    assignees:
-      - "Neiland85-Org/admin"
-    commit-message:
-      prefix: "deps"
-      include: "scope"
-    labels:
-      - "dependencies"
-      - "python"
 
 # Global configuration
 enable-beta-ecosystems: true

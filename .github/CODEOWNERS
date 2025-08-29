@@ -1,26 +1,43 @@
-    copilot/fix-cf8c08f3-46b3-4d72-a064-436451be75f2
-# Global Owners
-* @Neiland85-Org/admin
+# Global Owners - Usuario principal del proyecto
+* @estudio
 
-# Domain Layer - Requires domain expert review
-/src/domain/ @Neiland85-Org/domain-experts @Neiland85-Org/admin
+# Domain Layer - Requiere revisión de experto en dominio
+/src/domain/ @estudio
+/domain/ @estudio
 
-# Infrastructure Layer - Requires infrastructure review  
-/src/infrastructure/ @Neiland85-Org/infrastructure @Neiland85-Org/admin
+# Application Layer - Lógica de negocio
+/src/application/ @estudio
+/application/ @estudio
 
-# CI/CD and DevOps
-/.github/ @Neiland85-Org/devops @Neiland85-Org/admin
-/.devcontainer/ @Neiland85-Org/devops @Neiland85-Org/admin
-/docker* @Neiland85-Org/devops @Neiland85-Org/admin
+# Infrastructure Layer - Capa de infraestructura
+/src/infrastructure/ @estudio
+/infrastructure/ @estudio
 
-# Documentation
-*.md @Neiland85-Org/docs @Neiland85-Org/admin
-/docs/ @Neiland85-Org/docs @Neiland85-Org/admin
+# Presentation Layer - APIs y controladores
+/src/presentation/ @estudio
+/presentation/ @estudio
 
-# Security files
-SECURITY.md @Neiland85-Org/security @Neiland85-Org/admin
-/.github/dependabot.yml @Neiland85-Org/security @Neiland85-Org/admin
-* @Neiland85-Org/admins
-/apps/backend/ @Neiland85-Org/backend
-/apps/web/     @Neiland85-Org/frontend
-    main
+# CI/CD y DevOps - Configuraciones críticas
+/.github/ @estudio
+/.devcontainer/ @estudio
+/docker* @estudio
+
+# Aplicaciones específicas
+/apps/web/ @estudio
+/apps/backend/ @estudio
+
+# Documentación
+*.md @estudio
+/docs/ @estudio
+README.md @estudio
+
+# Archivos de seguridad - Revisión prioritaria
+SECURITY.md @estudio
+/.github/dependabot.yml @estudio
+/.github/workflows/codeql.yml @estudio
+
+# Configuraciones críticas
+pyproject.toml @estudio
+poetry.lock @estudio
+package.json @estudio
+package-lock.json @estudio
