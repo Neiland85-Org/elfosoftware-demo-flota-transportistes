@@ -1,0 +1,29 @@
+# Core dependencies for DELFOS project
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+sqlalchemy>=2.0.0
+alembic>=1.13.0
+
+# Development dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.11.0
+isort>=5.12.0
+ruff>=0.1.0
+mypy>=1.7.0
+pre-commit>=3.5.0
+
+# Optional dependencies
+python-multipart>=0.0.6
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-decouple>=3.8
+
+# Database drivers (optional)
+psycopg2-binary>=2.9.0
+sqlite3
+
+# Documentation
+mkdocs>=1.5.0
+mkdocs-material>=9.4.0
