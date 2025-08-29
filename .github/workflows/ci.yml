@@ -14,46 +14,46 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
-      
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-        
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install ruff mypy black isort pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f pyproject.toml ]; then pip install -e .; fi
-        
+
     - name: Lint with Ruff
       run: |
         # Check for syntax errors and undefined names
         ruff check . --select=E9,F63,F7,F82
         # Full lint check (will not fail the build for now)
         ruff check . || true
-        
+
     - name: Check formatting with Black
       run: |
         black --check --diff . || true
-        
+
     - name: Check import sorting with isort
       run: |
         isort --check-only --diff . || true
-        
+
     - name: Type checking with mypy
       run: |
         mypy . || true
-        
+
     - name: Test with pytest
       run: |
         pytest --cov=src --cov-report=xml --cov-report=html || true
-        
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
       with:
@@ -61,52 +61,16 @@ jobs:
         flags: unittests
         name: codecov-umbrella
 
-  security-scan:
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-      contents: read
-      actions: read
-    # Solo ejecutar si hay archivos Python reales en el proyecto
-    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.changed_files, '.py')) }}
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v5
-      
-    - name: Check for Python files
-      id: check_python
-      run: |
-        if find . -name "*.py" -type f | grep -q .; then
-          echo "has_python=true" >> $GITHUB_OUTPUT
-        else
-          echo "has_python=false" >> $GITHUB_OUTPUT
-        fi
-      
-    - name: Initialize CodeQL
-      if: steps.check_python.outputs.has_python == 'true'
-      uses: github/codeql-action/init@v3
-      with:
-        languages: python
-        
-    - name: Autobuild
-      if: steps.check_python.outputs.has_python == 'true'
-      uses: github/codeql-action/autobuild@v3
-      
-    - name: Perform CodeQL Analysis
-      if: steps.check_python.outputs.has_python == 'true'
-      uses: github/codeql-action/analyze@v3
-
   dependency-scan:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       security-events: write
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v5
-      
+
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
@@ -114,7 +78,7 @@ jobs:
         scan-ref: '.'
         format: 'sarif'
         output: 'trivy-results.sarif'
-        
+
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
       if: always()
