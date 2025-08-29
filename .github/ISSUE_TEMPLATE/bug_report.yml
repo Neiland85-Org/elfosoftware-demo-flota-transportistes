@@ -1,0 +1,19 @@
+name: 🐞 Bug
+description: Reporta un bug
+labels: [bug]
+body:
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducir
+      placeholder: "1...\n2...\n3..."
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes: { label: Esperado }
+  - type: textarea
+    id: actual
+    attributes: { label: Observado }
+  - type: input
+    id: version
+    attributes: { label: Versión/commit }
