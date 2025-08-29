@@ -1,3 +1,111 @@
+     copilot/fix-cf8c08f3-46b3-4d72-a064-436451be75f2
+name: ✨ Feature Request
+description: Solicitar una nueva funcionalidad para el sistema de Flota Transportistes
+title: "[FEATURE] "
+labels: ["enhancement", "feature-request"]
+assignees: ["Neiland85-Org/admin"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Solicitud de nueva funcionalidad siguiendo principios DELFOS y DDD.
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Capa de Arquitectura
+      description: ¿En qué capa de DELFOS se implementará principalmente?
+      options:
+        - Domain Layer (Entidades, Value Objects, Domain Services)
+        - Application Layer (Use Cases, Application Services)
+        - Infrastructure Layer (Repositories, External Services)
+        - Presentation Layer (API, Controllers, DTOs)
+    validations:
+      required: true
+
+  - type: input
+    id: bounded_context
+    attributes:
+      label: Bounded Context
+      description: ¿A qué bounded context pertenece esta funcionalidad?
+      placeholder: "ej: Flota, Transportista, Tracking, Rutas"
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_story
+    attributes:
+      label: Historia de Usuario
+      description: Describe la funcionalidad desde la perspectiva del usuario
+      placeholder: |
+        Como [tipo de usuario]
+        Quiero [funcionalidad]
+        Para [beneficio/objetivo]
+    validations:
+      required: true
+
+  - type: textarea
+    id: business_value
+    attributes:
+      label: Valor de Negocio
+      description: ¿Qué problema de negocio resuelve esta funcionalidad?
+      placeholder: "Esta funcionalidad permitirá..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Criterios de Aceptación
+      description: Define cuándo se considerará completa la funcionalidad
+      placeholder: |
+        - [ ] Dado que...
+        - [ ] Cuando...
+        - [ ] Entonces...
+    validations:
+      required: true
+
+  - type: textarea
+    id: domain_model
+    attributes:
+      label: Impacto en el Modelo de Dominio
+      description: ¿Qué entidades, value objects o aggregates se verán afectados?
+      placeholder: |
+        - Entidades nuevas/modificadas:
+        - Value Objects:
+        - Aggregates:
+        - Domain Events:
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridad
+      description: ¿Qué prioridad tiene esta funcionalidad?
+      options:
+        - High (Crítico para el negocio)
+        - Medium (Importante pero no urgente)
+        - Low (Mejora deseable)
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_notes
+    attributes:
+      label: Notas Técnicas
+      description: Consideraciones técnicas, dependencias, etc.
+      placeholder: "Dependencias, APIs externas, consideraciones de performance..."
+
+  - type: checkboxes
+    id: implementation
+    attributes:
+      label: Consideraciones de Implementación
+      options:
+        - label: Requiere migración de base de datos
+        - label: Necesita nuevas APIs externas
+        - label: Impacta en el modelo de dominio existente
+        - label: Requiere nuevos tests de integración
+        - label: Necesita documentación adicional
 name: ✨ Feature
 description: Propón una mejora
 labels: [enhancement]
@@ -16,3 +124,4 @@ body:
         Dado...
         Cuando...
         Entonces...
+       main

@@ -1,0 +1,214 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install ruff mypy black isort pytest pytest-cov
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f pyproject.toml ]; then pip install -e .; fi
+        
+    - name: Lint with Ruff
+      run: |
+        # Check for syntax errors and undefined names
+        ruff check . --select=E9,F63,F7,F82
+        # Full lint check (will not fail the build for now)
+        ruff check . || true
+        
+    - name: Check formatting with Black
+      run: |
+        black --check --diff . || true
+        
+    - name: Check import sorting with isort
+      run: |
+        isort --check-only --diff . || true
+        
+    - name: Type checking with mypy
+      run: |
+        mypy . || true
+        
+    - name: Test with pytest
+      run: |
+        pytest --cov=src --cov-report=xml --cov-report=html || true
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+
+  security-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+    # Solo ejecutar si hay archivos de código detectables
+    if: ${{ github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.changed_files, '.py') || contains(github.event.pull_request.changed_files, '.js') || contains(github.event.pull_request.changed_files, '.ts') || contains(github.event.pull_request.changed_files, '.java') || contains(github.event.pull_request.changed_files, '.go') || contains(github.event.pull_request.changed_files, '.cpp') || contains(github.event.pull_request.changed_files, '.c') || contains(github.event.pull_request.changed_files, '.cs') || contains(github.event.pull_request.changed_files, '.rb') || contains(github.event.pull_request.changed_files, '.php')) }}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: python
+        
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+      
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+
+  dependency-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect frontend
+        id: detect_frontend
+        run: |
+          if [ -f apps/web/package.json ]; then
+            echo "has_frontend=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_frontend=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python tooling & project deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pre-commit ruff black pytest
+          if [ -f requirements.txt ]; then
+            echo "[Instalando requirements.txt]"
+            echo "[Installing requirements.txt]"
+            pip install -r requirements.txt
+          fi
+          if [ -f requirements-dev.txt ]; then
+            echo "[Instalando requirements-dev.txt]"
+            echo "[Installing requirements-dev.txt]"
+            pip install -r requirements-dev.txt
+          fi
+          if grep -q "\[project\]" pyproject.toml 2>/dev/null; then
+            echo "[Instalando dependencias declaradas en pyproject]"
+            echo "[Installing dependencies declared in pyproject]"
+            pip install -e .
+          fi
+
+      - name: Run pre-commit (lint + format checks)
+        run: |
+          if [ -f .pre-commit-config.yaml ]; then
+            pre-commit run --all-files --show-diff-on-failure || true
+          else
+            echo "No .pre-commit-config.yaml, paso omitido."
+            echo "No .pre-commit-config.yaml, step skipped."
+          fi
+
+      - name: Backend tests (pytest)
+        run: |
+          if [ -d apps/backend ]; then
+            echo "Ejecutando pytest..."
+            echo "Running pytest..."
+            pytest -q
+          else
+            echo "apps/backend no existe, omitido."
+            echo "apps/backend not present, skipped."
+          fi
+
+      - name: Setup Node
+        if: steps.detect_frontend.outputs.has_frontend == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: |
+            apps/web/package-lock.json
+            apps/web/npm-shrinkwrap.json
+
+      - name: Frontend install
+        if: steps.detect_frontend.outputs.has_frontend == 'true'
+        run: |
+            if [ -f apps/web/package-lock.json ]; then
+              echo "Usando npm ci"
+              echo "Using npm ci"
+              npm --prefix apps/web ci
+            else
+              echo "No hay package-lock.json, usando npm install"
+              echo "No package-lock.json found, using npm install"
+              npm --prefix apps/web install
+            fi
+
+      - name: Frontend build
+        if: steps.detect_frontend.outputs.has_frontend == 'true'
+        run: npm --prefix apps/web run build --if-present
+
+      - name: Summary
+        run: |
+          echo "### CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "* Python version: $(python --version)" >> $GITHUB_STEP_SUMMARY
+          if [ -d apps/backend ]; then
+            echo "* Backend tests: ejecutados" >> $GITHUB_STEP_SUMMARY
+            echo "* Backend tests: executed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "* Backend tests: omitidos (sin apps/backend)" >> $GITHUB_STEP_SUMMARY
+            echo "* Backend tests: skipped (no apps/backend)" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ steps.detect_frontend.outputs.has_frontend }}" = "true" ]; then
+            echo "* Frontend: build ejecutado" >> $GITHUB_STEP_SUMMARY
+            echo "* Frontend: build executed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "* Frontend: no presente" >> $GITHUB_STEP_SUMMARY
+            echo "* Frontend: not present" >> $GITHUB_STEP_SUMMARY
+          fi

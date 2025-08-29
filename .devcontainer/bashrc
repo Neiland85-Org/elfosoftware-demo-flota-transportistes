@@ -1,0 +1,46 @@
+# Custom bashrc for development container
+
+# DELFOS Development Environment
+export PS1='\[\033[01;32m\]\u@elfosoftware-demo\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+# Python aliases
+alias py='python'
+alias pip='python -m pip'
+alias pytest='python -m pytest'
+alias mypy='python -m mypy'
+alias black='python -m black'
+alias isort='python -m isort'
+alias ruff='python -m ruff'
+
+# Development shortcuts
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Git shortcuts
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git pull'
+alias gd='git diff'
+alias gb='git branch'
+alias gco='git checkout'
+
+# DELFOS specific shortcuts
+alias test-unit='pytest tests/unit/ -v'
+alias test-integration='pytest tests/integration/ -v'
+alias test-e2e='pytest tests/e2e/ -v'
+alias test-all='pytest tests/ -v --cov=src --cov-report=html'
+alias lint='ruff check src/ tests/ && mypy src/'
+alias format='black src/ tests/ && isort src/ tests/'
+alias dev='uvicorn src.presentation.api.main:app --reload --host 0.0.0.0 --port 8000'
+
+# Welcome message
+echo "🚛 Bienvenido al entorno de desarrollo DELFOS - Flota Transportistes"
+echo "📦 Python $(python --version)"
+echo "🔧 Herramientas disponibles: pytest, mypy, black, isort, ruff, fastapi"
+echo "💡 Usa 'dev' para iniciar el servidor FastAPI"
+echo "🧪 Usa 'test-all' para ejecutar todos los tests con coverage"

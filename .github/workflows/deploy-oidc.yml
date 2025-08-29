@@ -1,0 +1,101 @@
+name: Deploy to AWS with OIDC
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: eu-west-1
+  
+permissions:
+  id-token: write   # Required for OIDC
+  contents: read    # Required for checking out code
+
+jobs:
+  deploy-aws:
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS credentials using OIDC
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        role-session-name: GitHubActions-${{ github.run_id }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install awscli
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+    - name: Build application
+      run: |
+        # Add your build steps here
+        echo "Building application..."
+        
+    - name: Deploy to AWS Lambda (example)
+      run: |
+        # Example deployment - replace with your actual deployment
+        echo "Deploying to AWS Lambda..."
+        # aws lambda update-function-code --function-name my-function --zip-file fileb://deployment.zip
+        
+    - name: Deploy to ECS (example)
+      run: |
+        # Example ECS deployment
+        echo "Deploying to ECS..."
+        # aws ecs update-service --cluster my-cluster --service my-service --force-new-deployment
+        
+  deploy-azure:
+    runs-on: ubuntu-latest
+    environment: production
+    if: false  # Disabled by default, enable as needed
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Azure Login using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        
+    - name: Deploy to Azure App Service
+      run: |
+        echo "Deploying to Azure..."
+        # Add Azure deployment commands here
+        
+  deploy-gcp:
+    runs-on: ubuntu-latest
+    environment: production
+    if: false  # Disabled by default, enable as needed
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Authenticate to Google Cloud using OIDC
+      uses: google-github-actions/auth@v1
+      with:
+        workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+        
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      
+    - name: Deploy to Google Cloud Run
+      run: |
+        echo "Deploying to GCP..."
+        # gcloud run deploy my-service --image gcr.io/my-project/my-image --platform managed

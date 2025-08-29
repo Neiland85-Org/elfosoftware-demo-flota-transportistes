@@ -1,3 +1,103 @@
+     copilot/fix-cf8c08f3-46b3-4d72-a064-436451be75f2
+name: 🐛 Bug Report
+description: Report a bug in the Flota Transportistes system
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: ["Neiland85-Org/admin"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por reportar un bug. Por favor, proporciona la información completa para ayudarnos a solucionarlo.
+
+  - type: input
+    id: component
+    attributes:
+      label: Componente Afectado
+      description: ¿Qué parte del sistema está afectada?
+      placeholder: "ej: Domain/Flota, Infrastructure/Repository, API/Transportistas"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Descripción del Bug
+      description: Describe claramente el problema
+      placeholder: "Describe qué está ocurriendo..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para Reproducir
+      description: Pasos específicos para reproducir el bug
+      placeholder: |
+        1. Ir a...
+        2. Hacer clic en...
+        3. Observar que...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamiento Esperado
+      description: ¿Qué debería ocurrir?
+      placeholder: "Debería..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportamiento Actual
+      description: ¿Qué está ocurriendo realmente?
+      placeholder: "En su lugar, ocurre..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severidad
+      description: ¿Qué tan crítico es este bug?
+      options:
+        - Critical (Sistema no funciona)
+        - High (Funcionalidad importante afectada)
+        - Medium (Problema menor pero notable)
+        - Low (Problema cosmético)
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Entorno
+      description: ¿En qué entorno ocurre?
+      placeholder: "desarrollo, staging, producción"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs/Stack Trace
+      description: Incluye logs relevantes o stack traces
+      render: shell
+
+  - type: checkboxes
+    id: ddd
+    attributes:
+      label: Verificación DDD
+      description: Para bugs de dominio
+      options:
+        - label: El bug viola reglas de negocio del dominio
+        - label: El bug afecta a un Aggregate Root
+        - label: El bug puede requerir Domain Event
+        - label: El bug afecta a Value Objects
 name: 🐞 Bug
 description: Reporta un bug
 labels: [bug]
@@ -17,3 +117,4 @@ body:
   - type: input
     id: version
     attributes: { label: Versión/commit }
+     main
