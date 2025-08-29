@@ -61,12 +61,53 @@ jobs:
       - name: Build package
         run: python -m build
 
-      - name: Publish to PyPI
+      - name: Check PyPI token availability
+        id: check_token
+        run: |
+          if [ -z "${{ secrets.PYPI_API_TOKEN }}" ]; then
+            echo "token_available=false" >> $GITHUB_OUTPUT
+            echo "⚠️  PYPI_API_TOKEN no configurado"
+          else
+            echo "token_available=true" >> $GITHUB_OUTPUT
+            echo "✅ PYPI_API_TOKEN configurado"
+          fi
+
+      - name: Publish to PyPI (opcional)
+        continue-on-error: true
         env:
           TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}  # Configure este secret en GitHub Settings si deseas publicar a PyPI
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: |
-          twine upload dist/*
+          echo "🚀 Intentando publicar a PyPI..."
+          if twine upload dist/*; then
+            echo "✅ Publicación a PyPI exitosa"
+          else
+            echo "⚠️  Error en la publicación a PyPI"
+            echo ""
+            echo "📋 Posibles causas y soluciones:"
+            echo "1. PYPI_API_TOKEN no configurado en GitHub Settings"
+            echo "2. Token de PyPI inválido o expirado"
+            echo "3. Permisos insuficientes en PyPI"
+            echo ""
+            echo "🔧 Para configurar PYPI_API_TOKEN:"
+            echo "   Settings > Secrets and variables > Actions > New repository secret"
+            echo "   Nombre: PYPI_API_TOKEN"
+            echo "   Valor: Tu token de PyPI (https://pypi.org/manage/account/token/)"
+            exit 1
+          fi
+
+      - name: Skip PyPI publish
+        if: steps.check_token.outputs.token_available == 'false'
+        run: |
+          echo "⚠️  Publicación a PyPI omitida - PYPI_API_TOKEN no configurado"
+          echo ""
+          echo "📋 Para habilitar la publicación automática a PyPI:"
+          echo "1. Ve a Settings > Secrets and variables > Actions"
+          echo "2. Haz clic en 'New repository secret'"
+          echo "3. Nombre: PYPI_API_TOKEN"
+          echo "4. Valor: Tu token de PyPI (obtenlo de https://pypi.org/manage/account/token/)"
+          echo ""
+          echo "🔄 El próximo release se publicará automáticamente"
 
   # Job opcional para publicar la web app cuando se crea un release
   publish-web:
