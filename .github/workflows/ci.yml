@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "main"
+      - "chore/foundation"
+      - "chore/**"
+      - "feature/**"
+      - "feat/**"
+  pull_request: {}  # Cualquier PR (independiente de la rama base)  # Any PR (regardless of base branch)
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect frontend
+        id: detect_frontend
+        run: |
+          if [ -f apps/web/package.json ]; then
+            echo "has_frontend=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_frontend=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python tooling & project deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pre-commit ruff black pytest
+          if [ -f requirements.txt ]; then
+            echo "[Instalando requirements.txt]"
+            echo "[Installing requirements.txt]"
+            pip install -r requirements.txt
+          fi
+          if [ -f requirements-dev.txt ]; then
+            echo "[Instalando requirements-dev.txt]"
+            echo "[Installing requirements-dev.txt]"
+            pip install -r requirements-dev.txt
+          fi
+          if grep -q "\[project\]" pyproject.toml 2>/dev/null; then
+            echo "[Instalando dependencias declaradas en pyproject]"
+            echo "[Installing dependencies declared in pyproject]"
+            pip install -e .
+          fi
+
+      - name: Run pre-commit (lint + format checks)
+        run: |
+          if [ -f .pre-commit-config.yaml ]; then
+            pre-commit run --all-files --show-diff-on-failure
+          else
+            echo "No .pre-commit-config.yaml, paso omitido."
+            echo "No .pre-commit-config.yaml, step skipped."
+          fi
+
+      - name: Backend tests (pytest)
+        run: |
+          if [ -d apps/backend ]; then
+            echo "Ejecutando pytest..."
+            echo "Running pytest..."
+            pytest -q
+          else
+            echo "apps/backend no existe, omitido."
+            echo "apps/backend not present, skipped."
+          fi
+
+      - name: Setup Node
+        if: steps.detect_frontend.outputs.has_frontend == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: |
+            apps/web/package-lock.json
+            apps/web/npm-shrinkwrap.json
+
+      - name: Frontend install
+        if: steps.detect_frontend.outputs.has_frontend == 'true'
+        run: |
+            if [ -f apps/web/package-lock.json ]; then
+              echo "Usando npm ci"
+              echo "Using npm ci"
+              npm --prefix apps/web ci
+            else
+              echo "No hay package-lock.json, usando npm install"
+              echo "No package-lock.json found, using npm install"
+              npm --prefix apps/web install
+            fi
+
+      - name: Frontend build
+        if: steps.detect_frontend.outputs.has_frontend == 'true'
+        run: npm --prefix apps/web run build --if-present
+
+      - name: Summary
+        run: |
+          echo "### CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "* Python version: $(python --version)" >> $GITHUB_STEP_SUMMARY
+          if [ -d apps/backend ]; then
+            echo "* Backend tests: ejecutados" >> $GITHUB_STEP_SUMMARY
+            echo "* Backend tests: executed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "* Backend tests: omitidos (sin apps/backend)" >> $GITHUB_STEP_SUMMARY
+            echo "* Backend tests: skipped (no apps/backend)" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ "${{ steps.detect_frontend.outputs.has_frontend }}" = "true" ]; then
+            echo "* Frontend: build ejecutado" >> $GITHUB_STEP_SUMMARY
+            echo "* Frontend: build executed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "* Frontend: no presente" >> $GITHUB_STEP_SUMMARY
+            echo "* Frontend: not present" >> $GITHUB_STEP_SUMMARY
+          fi
