@@ -6,21 +6,25 @@
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
       "draft": false,
-      "prerelease": false
+      "prerelease": false,
+      "changelog-path": "CHANGELOG.md",
+      "versioning": "default"
     },
     "apps/web": {
       "release-type": "node",
       "bump-minor-pre-major": false,
       "bump-patch-for-minor-pre-major": false,
       "draft": false,
-      "prerelease": false
+      "prerelease": false,
+      "changelog-path": "CHANGELOG.md",
+      "versioning": "default"
     }
   },
   "bootstrap-sha": "59b329582d5787669681f2e370e520ca5284ea33",
   "plugins": [
     {
       "type": "node-workspace",
-      "merge": false
+      "merge": true
     }
   ]
 }

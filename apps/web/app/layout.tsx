@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Flota Transportistes',
-  description: 'Sistema de gestión de flota de transportistas',
+  title: 'Elfosoftware - Flota Transportistes',
+  description:
+    'Sistema de gestión de flota de transportistas - Arquitectura DELFOS',
 };
 
 export default function RootLayout({
@@ -12,7 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang='es'>
-      <body>{children}</body>
+      <body className={inter.className}>
+        <main className='min-h-screen bg-gray-50'>{children}</main>
+      </body>
     </html>
   );
 }
