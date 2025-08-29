@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, chore/dev-env-ci ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop, chore/dev-env-ci ]
 
 env:
   PYTHON_VERSION: "3.11"
@@ -57,7 +57,7 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
       with:
-        file: ./coverage.xml
+        files: ./coverage.xml
         flags: unittests
         name: codecov-umbrella
 
@@ -107,7 +107,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install Python tooling & project deps
         run: |
