@@ -25,14 +25,14 @@ class Transportista(BaseModel):
     fecha_creacion: datetime = Field(default_factory=datetime.now)
     fecha_actualizacion: datetime = Field(default_factory=datetime.now)
 
-    class Config:
-        """Configuración Pydantic."""
-        from_attributes = True
-        json_encoders = {
+    model_config = {
+        "from_attributes": True,
+        "json_encoders": {
             datetime: lambda v: v.isoformat(),
             date: lambda v: v.isoformat(),
             UUID: lambda v: str(v)
         }
+    }
 
     @property
     def nombre_completo(self) -> str:

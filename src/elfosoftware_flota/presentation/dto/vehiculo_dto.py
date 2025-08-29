@@ -19,7 +19,7 @@ class VehiculoDTO(BaseModel):
     matricula: str  # Representamos la matrícula como string para la API
     marca: str = Field(..., min_length=1, max_length=50)
     modelo: str = Field(..., min_length=1, max_length=50)
-    anio: int = Field(..., ge=1900, le=datetime.now().year + 1)
+    anio: int = Field(..., ge=1900, le=2030)
     capacidad_carga_kg: float = Field(..., gt=0)
     tipo_vehiculo: str = Field(..., min_length=1, max_length=50)
     fecha_matriculacion: date
@@ -31,13 +31,13 @@ class VehiculoDTO(BaseModel):
     necesita_revision: bool
     antiguedad_anios: int
 
-    class Config:
-        """Configuración Pydantic."""
-        json_encoders = {
+    model_config = {
+        "json_encoders": {
             datetime: lambda v: v.isoformat(),
             date: lambda v: v.isoformat(),
             UUID: lambda v: str(v)
         }
+    }
 
 
 class CrearVehiculoDTO(BaseModel):
@@ -46,7 +46,7 @@ class CrearVehiculoDTO(BaseModel):
     matricula: str = Field(..., min_length=1, max_length=10)
     marca: str = Field(..., min_length=1, max_length=50)
     modelo: str = Field(..., min_length=1, max_length=50)
-    anio: int = Field(..., ge=1900, le=datetime.now().year + 1)
+    anio: int = Field(..., ge=1900, le=2030)
     capacidad_carga_kg: float = Field(..., gt=0)
     tipo_vehiculo: str = Field(..., min_length=1, max_length=50)
     fecha_matriculacion: date
@@ -77,11 +77,11 @@ class VehiculoResumenDTO(BaseModel):
     activo: bool
     necesita_revision: bool
 
-    class Config:
-        """Configuración Pydantic."""
-        json_encoders = {
+    model_config = {
+        "json_encoders": {
             UUID: lambda v: str(v)
         }
+    }
 
 
 class ActualizarKilometrajeDTO(BaseModel):
