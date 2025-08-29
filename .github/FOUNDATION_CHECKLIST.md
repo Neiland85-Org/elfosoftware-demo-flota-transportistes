@@ -3,14 +3,15 @@
 This checklist tracks the implementation of foundational repository setup scaffolding for the elfosoftware-demo-flota-transportistes project.
 
 ## Development Environment
-- [ ] Devcontainer added (.devcontainer/devcontainer.json)
-- [ ] VS Code extensions & settings (.vscode/)
+- [x] Devcontainer added (.devcontainer/devcontainer.json)
+- [x] VS Code extensions & settings (.vscode/)
 - [ ] EditorConfig (.editorconfig)
 
 ## Code Quality & Formatting
 - [ ] ESLint config
 - [ ] Prettier config
-- [ ] Ruff / Black config
+- [x] Ruff / Black config
+- [x] Pre-commit hooks (.pre-commit-config.yaml)
 - [ ] package.json scripts (if applicable)
 - [ ] Husky + lint-staged (if confirmed)
 
