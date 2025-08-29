@@ -27,7 +27,6 @@ python-decouple>=3.8
 
 # Database drivers (optional)
 psycopg2-binary>=2.9.0
-sqlite3
 
 # Documentation
 mkdocs>=1.5.0

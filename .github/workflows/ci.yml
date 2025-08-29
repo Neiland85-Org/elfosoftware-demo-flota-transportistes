@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, origin/chore/dev-env-ci ]
+    branches: [ main, develop, chore/dev-env-ci ]
   pull_request:
-    branches: [ main, develop, origin/chore/dev-env-ci ]
+    branches: [ main, develop, chore/dev-env-ci ]
 
 env:
   PYTHON_VERSION: "3.11"
