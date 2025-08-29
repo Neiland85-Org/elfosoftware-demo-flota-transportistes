@@ -1,3 +1,4 @@
+     copilot/fix-cf8c08f3-46b3-4d72-a064-436451be75f2
 name: ✨ Feature Request
 description: Solicitar una nueva funcionalidad para el sistema de Flota Transportistes
 title: "[FEATURE] "
@@ -105,3 +106,22 @@ body:
         - label: Impacta en el modelo de dominio existente
         - label: Requiere nuevos tests de integración
         - label: Necesita documentación adicional
+name: ✨ Feature
+description: Propón una mejora
+labels: [enhancement]
+body:
+  - type: textarea
+    id: value
+    attributes:
+      label: Valor para el usuario
+      description: ¿Qué problema resuelve?
+    validations: { required: true }
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación (Gherkin)
+      placeholder: |
+        Dado...
+        Cuando...
+        Entonces...
+       main

@@ -1,4 +1,5 @@
 # Security Policy
+     copilot/fix-cf8c08f3-46b3-4d72-a064-436451be75f2
 
 ## Supported Versions
 
@@ -65,3 +66,6 @@ For urgent security matters, you can also contact the security team at:
 - [DELFOS Security Guidelines](# Internal documentation reference)
 
 Thank you for helping keep our project secure!
+## Reporting a Vulnerability
+Usa "Security > Report a vulnerability" para informar de forma privada. No abras issues públicas. Incluye versión/commit afectado, PoC y alcance.
+     main
