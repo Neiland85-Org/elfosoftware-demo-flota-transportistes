@@ -1,0 +1,37 @@
+name: "🚛 Elfosoftware Demo Flota Transportistes"
+description: "Demo de flota per a transportistes creada amb arquitectura DELFOS"
+
+# Repository configuration
+homepage: "https://neiland85-org.github.io/elfosoftware-demo-flota-transportistes"
+topics:
+  - transportation
+  - fleet-management
+  - ddd
+  - delfos-architecture
+  - python
+  - fastapi
+  - domain-driven-design
+  - microservices
+
+# Default branch
+default_branch: main
+
+# Features
+has_issues: true
+has_projects: true
+has_wiki: true
+has_discussions: true
+
+# Security
+allow_squash_merge: true
+allow_merge_commit: false
+allow_rebase_merge: false
+delete_branch_on_merge: true
+
+# Branch protection (configured via GitHub UI)
+# Main branch requires:
+# - At least 1 review from CODEOWNERS
+# - Status checks to pass (CI/CD)
+# - Up-to-date branches
+# - No force pushes
+# - No deletions

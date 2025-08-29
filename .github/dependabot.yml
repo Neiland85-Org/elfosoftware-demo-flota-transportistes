@@ -1,0 +1,81 @@
+version: 2
+updates:
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "Neiland85-Org/security"
+    assignees:
+      - "Neiland85-Org/admin"
+    commit-message:
+      prefix: "security"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "security"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly" 
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "Neiland85-Org/devops"
+    assignees:
+      - "Neiland85-Org/admin"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "ci/cd"
+
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "Neiland85-Org/infrastructure"
+    assignees:
+      - "Neiland85-Org/admin"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+    labels:
+      - "docker"
+      - "infrastructure"
+
+  # Poetry dependencies (if using Poetry)
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    target-branch: "develop"
+    reviewers:
+      - "Neiland85-Org/security"
+    assignees:
+      - "Neiland85-Org/admin"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+
+# Global configuration
+enable-beta-ecosystems: true

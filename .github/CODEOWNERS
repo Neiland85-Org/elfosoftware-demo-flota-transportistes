@@ -1,0 +1,21 @@
+# Global Owners
+* @Neiland85-Org/admin
+
+# Domain Layer - Requires domain expert review
+/src/domain/ @Neiland85-Org/domain-experts @Neiland85-Org/admin
+
+# Infrastructure Layer - Requires infrastructure review  
+/src/infrastructure/ @Neiland85-Org/infrastructure @Neiland85-Org/admin
+
+# CI/CD and DevOps
+/.github/ @Neiland85-Org/devops @Neiland85-Org/admin
+/.devcontainer/ @Neiland85-Org/devops @Neiland85-Org/admin
+/docker* @Neiland85-Org/devops @Neiland85-Org/admin
+
+# Documentation
+*.md @Neiland85-Org/docs @Neiland85-Org/admin
+/docs/ @Neiland85-Org/docs @Neiland85-Org/admin
+
+# Security files
+SECURITY.md @Neiland85-Org/security @Neiland85-Org/admin
+/.github/dependabot.yml @Neiland85-Org/security @Neiland85-Org/admin
