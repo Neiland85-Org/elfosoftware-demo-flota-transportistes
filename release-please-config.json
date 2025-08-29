@@ -16,7 +16,7 @@
       "prerelease": false
     }
   },
-  "bootstrap-sha": "b82a1e9c3c57f5b4a8c6e2f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8",
+  "bootstrap-sha": "59b329582d5787669681f2e370e520ca5284ea33",
   "plugins": [
     {
       "type": "node-workspace",
