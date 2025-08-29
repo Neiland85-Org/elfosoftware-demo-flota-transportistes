@@ -14,7 +14,7 @@ from elfosoftware_flota.domain.value_objects.matricula import Matricula
 class InMemoryVehiculoRepository(IVehiculoRepository):
     """Repositorio en memoria para Vehiculo."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Inicializa el repositorio con datos de ejemplo."""
         self._vehiculos: Dict[UUID, Vehiculo] = {}
         self._vehiculos_por_matricula: Dict[str, UUID] = {}
@@ -85,7 +85,7 @@ class InMemoryVehiculoRepository(IVehiculoRepository):
 
         # Crear algunos vehículos de ejemplo
         vehiculo1 = Vehiculo(
-            matricula=Matricula("ABC123"),
+            matricula=Matricula(valor="ABC123"),
             marca="Mercedes-Benz",
             modelo="Actros",
             anio=2020,
@@ -97,7 +97,7 @@ class InMemoryVehiculoRepository(IVehiculoRepository):
         )
 
         vehiculo2 = Vehiculo(
-            matricula=Matricula("XYZ789"),
+            matricula=Matricula(valor="XYZ789"),
             marca="Volvo",
             modelo="FH16",
             anio=2019,
@@ -109,7 +109,7 @@ class InMemoryVehiculoRepository(IVehiculoRepository):
         )
 
         vehiculo3 = Vehiculo(
-            matricula=Matricula("DEF456"),
+            matricula=Matricula(valor="DEF456"),
             marca="Iveco",
             modelo="Stralis",
             anio=2021,
