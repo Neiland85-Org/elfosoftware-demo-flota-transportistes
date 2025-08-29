@@ -16,6 +16,8 @@ jobs:
   deploy-aws:
     runs-on: ubuntu-latest
     environment: production
+    # Solo ejecutar en push a main (deshabilitar hasta configurar AWS_ROLE_ARN)
+    if: false  # Temporalmente deshabilitado hasta configurar secrets de AWS
     
     steps:
     - name: Checkout code
