@@ -19,7 +19,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Configure AWS credentials using OIDC
       uses: aws-actions/configure-aws-credentials@v4
@@ -63,7 +63,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Azure Login using OIDC
       uses: azure/login@v1
@@ -84,7 +84,7 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       
     - name: Authenticate to Google Cloud using OIDC
       uses: google-github-actions/auth@v1
