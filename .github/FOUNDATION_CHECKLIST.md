@@ -3,11 +3,13 @@
 This checklist tracks the implementation of foundational repository setup scaffolding for the elfosoftware-demo-flota-transportistes project.
 
 ## Development Environment
+
 - [x] Devcontainer added (.devcontainer/devcontainer.json)
 - [x] VS Code extensions & settings (.vscode/)
 - [ ] EditorConfig (.editorconfig)
 
 ## Code Quality & Formatting
+
 - [ ] ESLint config
 - [ ] Prettier config
 - [x] Ruff / Black config
@@ -16,14 +18,17 @@ This checklist tracks the implementation of foundational repository setup scaffo
 - [ ] Husky + lint-staged (if confirmed)
 
 ## Security & Dependencies
+
 - [ ] Dependabot config (.github/dependabot.yml)
 - [ ] CodeQL workflow (.github/workflows/codeql.yml)
 
 ## CI/CD
+
 - [ ] CI workflow (.github/workflows/ci.yml)
 - [ ] Release Please workflow & config (.github/workflows/release-please.yml)
 
 ## Collaboration & Governance
+
 - [ ] Issue templates (.github/ISSUE_TEMPLATE/)
 - [ ] PR template (.github/PULL_REQUEST_TEMPLATE.md)
 - [ ] CODEOWNERS (.github/CODEOWNERS)
@@ -31,11 +36,13 @@ This checklist tracks the implementation of foundational repository setup scaffo
 - [ ] CONTRIBUTING.md (optional)
 
 ## Project Hygiene
+
 - [ ] .gitignore (Node + Python)
 - [ ] README dev section
-- [ ] Version pin files (.nvmrc / pyproject.toml / requirements*.txt)
+- [ ] Version pin files (.nvmrc / pyproject.toml / requirements\*.txt)
 
 ## Manual Settings (Separate Issues)
+
 - [ ] Manual settings issues created
 - [ ] Branch protection rules (main)
 - [ ] Enable private vulnerability reporting
