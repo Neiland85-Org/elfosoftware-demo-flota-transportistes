@@ -9,8 +9,6 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from elfosoftware_flota.domain.value_objects.matricula import Matricula
-
 
 class VehiculoDTO(BaseModel):
     """DTO para Vehiculo."""
