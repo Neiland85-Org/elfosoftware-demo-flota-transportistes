@@ -7,13 +7,10 @@ Inmutable y con validación de formato.
 import re
 from typing import Pattern
 
-    fix/pydantic-v2-migration
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 # Patrón de matrícula española: 4 números + 3 letras (ej: 1234ABC)
 PATRON_MATRICULA: Pattern[str] = re.compile(r'^\d{4}[A-Z]{3}$')
-from pydantic import BaseModel, Field, field_validator
-     main
 
 
 class Matricula(BaseModel):
@@ -21,10 +18,7 @@ class Matricula(BaseModel):
 
     valor: str = Field(..., min_length=1, max_length=10)
 
-     fix/pydantic-v2-migration
     model_config = ConfigDict(frozen=True)  # Hace la instancia inmutable
-    model_config = {"frozen": True}
-      main
 
     @field_validator('valor')
     @classmethod
@@ -32,15 +26,10 @@ class Matricula(BaseModel):
         """Valida el formato de la matrícula."""
         v_upper = v.upper().strip()
 
-        fix/pydantic-v2-migration
         if not PATRON_MATRICULA.match(v_upper):
             raise ValueError(
                 "Formato de matrícula inválido. Debe ser 4 números + 3 letras (ej: 1234ABC)"
             )
-        # Validación simple por ahora
-        if len(v_upper) < 1:
-            raise ValueError("Matrícula no puede estar vacía")
-         main
 
         return v_upper
 
