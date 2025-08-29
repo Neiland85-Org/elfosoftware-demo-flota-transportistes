@@ -28,6 +28,18 @@ vehiculo_router = APIRouter(tags=["vehículos"])
 
 def vehiculo_to_dto(vehiculo: Vehiculo) -> VehiculoDTO:
     """Convierte una entidad Vehiculo a VehiculoDTO."""
+    try:
+        necesita_rev = vehiculo.necesita_revision
+    except Exception as e:
+        print(f"Error calculando necesita_revision: {e}")
+        necesita_rev = True
+
+    try:
+        antiguedad = vehiculo.antiguedad_anios
+    except Exception as e:
+        print(f"Error calculando antiguedad_anios: {e}")
+        antiguedad = 0
+
     return VehiculoDTO(
         id=vehiculo.id,
         matricula=str(vehiculo.matricula),
@@ -42,13 +54,19 @@ def vehiculo_to_dto(vehiculo: Vehiculo) -> VehiculoDTO:
         activo=vehiculo.activo,
         fecha_creacion=vehiculo.fecha_creacion,
         fecha_actualizacion=vehiculo.fecha_actualizacion,
-        necesita_revision=vehiculo.necesita_revision,
-        antiguedad_anios=vehiculo.antiguedad_anios,
+        necesita_revision=necesita_rev,
+        antiguedad_anios=antiguedad,
     )
 
 
 def vehiculo_to_resumen_dto(vehiculo: Vehiculo) -> VehiculoResumenDTO:
     """Convierte una entidad Vehiculo a VehiculoResumenDTO."""
+    try:
+        necesita_rev = vehiculo.necesita_revision
+    except Exception as e:
+        print(f"Error en vehiculo_to_resumen_dto calculando necesita_revision: {e}")
+        necesita_rev = True
+
     return VehiculoResumenDTO(
         id=vehiculo.id,
         matricula=str(vehiculo.matricula),
@@ -56,7 +74,7 @@ def vehiculo_to_resumen_dto(vehiculo: Vehiculo) -> VehiculoResumenDTO:
         modelo=vehiculo.modelo,
         tipo_vehiculo=vehiculo.tipo_vehiculo,
         activo=vehiculo.activo,
-        necesita_revision=vehiculo.necesita_revision,
+        necesita_revision=necesita_rev,
     )
 
 
@@ -127,31 +145,73 @@ async def crear_vehiculo(
     repository: IVehiculoRepository = Depends(get_vehiculo_repository)
 ) -> VehiculoDTO:
     """Crear un nuevo vehículo."""
+       fix/pydantic-v2-migration
     # Verificar si ya existe un vehículo con esa matrícula
     matricula_obj = Matricula(valor=vehiculo_data.matricula)
+    print(f"📥 Recibidos datos: {vehiculo_data}")
+    print(f"📝 Matrícula: {vehiculo_data.matricula}")
+    print(f"🏢 Marca: {vehiculo_data.marca}")
+
+    try:
+        # Verificar si ya existe un vehículo con esa matrícula
+        matricula_obj = Matricula(valor=vehiculo_data.matricula)
+        print(f"✅ Matrícula creada: {matricula_obj}")
+    except Exception as e:
+        print(f"❌ Error creando matrícula: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Error en matrícula: {str(e)}"
+        )
+
+         main
     if await repository.exists_by_matricula(matricula_obj):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Ya existe un vehículo con la matrícula {vehiculo_data.matricula}"
         )
 
-    # Crear la entidad Vehiculo
-    vehiculo = Vehiculo(
-        matricula=matricula_obj,
-        marca=vehiculo_data.marca,
-        modelo=vehiculo_data.modelo,
-        anio=vehiculo_data.anio,
-        capacidad_carga_kg=vehiculo_data.capacidad_carga_kg,
-        tipo_vehiculo=vehiculo_data.tipo_vehiculo,
-        fecha_matriculacion=vehiculo_data.fecha_matriculacion,
-        fecha_ultima_revision=vehiculo_data.fecha_ultima_revision,
-        kilometraje_actual=vehiculo_data.kilometraje_actual or 0,
-    )
+    try:
+        # Crear la entidad Vehiculo
+        vehiculo = Vehiculo(
+            matricula=matricula_obj,
+            marca=vehiculo_data.marca,
+            modelo=vehiculo_data.modelo,
+            anio=vehiculo_data.anio,
+            capacidad_carga_kg=vehiculo_data.capacidad_carga_kg,
+            tipo_vehiculo=vehiculo_data.tipo_vehiculo,
+            fecha_matriculacion=vehiculo_data.fecha_matriculacion,
+            fecha_ultima_revision=vehiculo_data.fecha_ultima_revision,
+            kilometraje_actual=vehiculo_data.kilometraje_actual or 0,
+        )
+        print(f"✅ Vehículo creado: {vehiculo.id}")
+    except Exception as e:
+        print(f"❌ Error creando vehículo: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error creando entidad vehículo: {str(e)}"
+        )
 
-    # Guardar en el repositorio
-    await repository.save(vehiculo)
+    try:
+        # Guardar en el repositorio
+        await repository.save(vehiculo)
+        print(f"✅ Vehículo guardado en repositorio")
+    except Exception as e:
+        print(f"❌ Error guardando en repositorio: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error guardando vehículo: {str(e)}"
+        )
 
-    return vehiculo_to_dto(vehiculo)
+    try:
+        result = vehiculo_to_dto(vehiculo)
+        print(f"✅ DTO creado exitosamente")
+        return result
+    except Exception as e:
+        print(f"❌ Error convirtiendo a DTO: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error convirtiendo respuesta: {str(e)}"
+        )
 
 
 @vehiculo_router.put(
@@ -359,3 +419,13 @@ async def contar_vehiculos_activos(
     """Contar vehículos activos."""
     count = await repository.count_activos()
     return {"count": count, "message": f"Hay {count} vehículos activos"}
+
+
+@vehiculo_router.post(
+    "/test",
+    summary="Endpoint de prueba",
+    description="Endpoint simple para probar la funcionalidad básica."
+)
+async def test_endpoint():
+    """Endpoint de prueba simple."""
+    return {"message": "Test endpoint working", "timestamp": "2025-08-30"}

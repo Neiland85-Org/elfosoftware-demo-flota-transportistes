@@ -23,13 +23,13 @@ class Flota(BaseModel):
     fecha_creacion: datetime = Field(default_factory=datetime.now)
     fecha_actualizacion: datetime = Field(default_factory=datetime.now)
 
-    class Config:
-        """Configuración Pydantic."""
-        from_attributes = True
-        json_encoders = {
+    model_config = {
+        "from_attributes": True,
+        "json_encoders": {
             datetime: lambda v: v.isoformat(),
             UUID: lambda v: str(v)
         }
+    }
 
     def agregar_transportista(self, transportista_id: UUID) -> None:
         """Agrega un transportista a la flota."""
