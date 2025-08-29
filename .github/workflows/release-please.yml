@@ -14,10 +14,6 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      id-token: write
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
@@ -73,6 +69,7 @@ jobs:
           fi
 
       - name: Publish to PyPI (opcional)
+        if: steps.check_token.outputs.token_available == 'true'
         continue-on-error: true
         env:
           TWINE_USERNAME: __token__
