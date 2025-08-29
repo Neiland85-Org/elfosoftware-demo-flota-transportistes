@@ -19,7 +19,7 @@ class Vehiculo(BaseModel):
     matricula: Matricula
     marca: str = Field(..., min_length=1, max_length=50)
     modelo: str = Field(..., min_length=1, max_length=50)
-    anio: int = Field(..., ge=1900, le=datetime.now().year + 1)
+    anio: int = Field(..., ge=1900, le=2030)
     capacidad_carga_kg: float = Field(..., gt=0)
     tipo_vehiculo: str = Field(..., min_length=1, max_length=50)  # camión, furgoneta, etc.
     fecha_matriculacion: date
@@ -29,14 +29,14 @@ class Vehiculo(BaseModel):
     fecha_creacion: datetime = Field(default_factory=datetime.now)
     fecha_actualizacion: datetime = Field(default_factory=datetime.now)
 
-    class Config:
-        """Configuración Pydantic."""
-        from_attributes = True
-        json_encoders = {
+    model_config = {
+        "from_attributes": True,
+        "json_encoders": {
             datetime: lambda v: v.isoformat(),
             date: lambda v: v.isoformat(),
             UUID: lambda v: str(v)
         }
+    }
 
     @property
     def necesita_revision(self) -> bool:
