@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 # Domain imports
-from src.domain.entities.vehiculo import TipoVehiculo, EstadoVehiculo
+from src.domain.entities.vehiculo import Vehiculo, TipoVehiculo, EstadoVehiculo
 
 # Infrastructure imports
 from src.infrastructure.repositories.vehiculo_repository import SQLAlchemyVehiculoRepository
@@ -62,7 +62,7 @@ class TestVehiculoAPI:
         # Create some test vehicles
         repo = SQLAlchemyVehiculoRepository(db_session)
 
-        vehiculo1 = sample_vehiculo.__class__(
+        vehiculo1 = Vehiculo(
             id="VEH001",
             matricula="ABC123",
             marca="Mercedes",
@@ -74,7 +74,7 @@ class TestVehiculoAPI:
             kilometraje=50000
         )
 
-        vehiculo2 = sample_vehiculo.__class__(
+        vehiculo2 = Vehiculo(
             id="VEH002",
             matricula="XYZ789",
             marca="Volvo",
@@ -102,7 +102,7 @@ class TestVehiculoAPI:
         # Create test vehicles with different statuses
         repo = SQLAlchemyVehiculoRepository(db_session)
 
-        vehiculo_disponible = sample_vehiculo.__class__(
+        vehiculo_disponible = Vehiculo(
             id="VEH001",
             matricula="ABC123",
             marca="Mercedes",
@@ -114,7 +114,7 @@ class TestVehiculoAPI:
             kilometraje=50000
         )
 
-        vehiculo_en_uso = sample_vehiculo.__class__(
+        vehiculo_en_uso = Vehiculo(
             id="VEH002",
             matricula="XYZ789",
             marca="Volvo",
