@@ -18,7 +18,8 @@ def client():
 @pytest.fixture
 async def async_client():
     """Async test client fixture"""
-    async with AsyncClient(app=app, base_url="http://testserver") as client:
+    from httpx import ASGITransport
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         yield client
 
 
