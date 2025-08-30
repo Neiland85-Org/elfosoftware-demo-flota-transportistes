@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.3.0](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.2.0...v0.3.0) (2025-08-30)
+
+
+### Features
+
+* add SQLAlchemy and Alembic persistence layer ([5bb051f](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/5bb051fbb68b38ce091c47353ed3754f55eb5e90))
+* Agregar script de desarrollo y actualizar documentación ([7702cc3](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/7702cc3576f3cc7f178625edb1b8bcd6e84a9325))
+* Configuración completa de Docker para el proyecto ([3acda68](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/3acda68d3e7f66ccf1f1568c10de025e03279bc5))
+* Implementar arquitectura DELFOS completa para demo de flota transportistes ([ddb89d6](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/ddb89d6ccd78d5ee7540b2eaaad8a23dff7aca58))
+
+
+### Bug Fixes
+
+* add ignore rules for failing Dependabot PRs (lint-staged, @types/node, husky, actions/checkout) ([1feb8ad](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/1feb8ad0d1f38adfeebdbb514a4a880865503f88))
+* add ignore rules for failing React and ESLint Dependabot PRs ([e283592](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/e283592b58fa04b23f0c10c79f76e480f5a07d50))
+* Agregar pydantic[email] a dependencias opcionales ([e97d285](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/e97d2859b87fd54eed4002c873be74c402450cc9))
+* Consolidar configuración de pytest y resolver dependencias ([4f08d48](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/4f08d48b4db25f5681d88e8640b7c2c2873077e7))
+* correct async_client fixture in test_health.py ([a9265ef](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/a9265efe2791c03f6ad659912ae8e575371ef3a5))
+* correct async_client fixture in test_health.py ([192fc66](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/192fc66473f9f99cffd43c56b59b239a28649cf6))
+* correct AsyncClient usage in test fixture ([ef7c487](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/ef7c4876fbf9aada8a26408e05140355746067e6))
+* correct Dependabot configuration for multi-ecosystem project ([6664bba](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/6664bbafbeee3f07f61eb478548c124e6009dc89))
+* correct npm cache dependency path in CI workflow ([5cf74d8](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/5cf74d8fbce733c1a71f8bd2183bbd3283e0b769))
+* Corregir configuración de Dependabot y CI/CD ([dccdfb3](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/dccdfb34337507b95bb1f117ffcdf666af19bc36))
+* Corregir configuración del cache de npm ([c885384](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/c885384197b3d02e96ed686c4d89769648a655d3))
+* Corregir conflicto de versiones React/Next.js ([32d1bb5](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/32d1bb587ebc83ed814cafb384adebcf21d8ee8e))
+* Corregir estructura del proyecto en CI/CD ([2d1617c](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/2d1617c14e8ddaee21669cc3d866efe95ed87a0d))
+* Instalar dependencias opcionales en CI/CD ([c166d00](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/c166d006d395ba2c5c68bab9d99fb9e3f709d925))
+* optimize Dependabot configuration to reduce PR spam ([59ec460](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/59ec460ad9600efc871073f7434997c9c3fa84e9))
+* remove non-existent package-lock.json from npm cache config ([2b03b16](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/2b03b16d9235c73eeda950b91534846556662ed7))
+* Reordenar instalación de dependencias en CI/CD ([74e772f](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/74e772f262059de2f60480f9e1fbd58b8c222fcb))
+* replace manual git checkout with actions/checkout@v4 ([2eac689](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/2eac689b998a19fb08ac5cc800b71d758cb91c1e))
+
 ## [0.2.0](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.1.0...v0.2.0) (2025-08-30)
 
 
