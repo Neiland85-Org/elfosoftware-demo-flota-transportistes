@@ -42,6 +42,7 @@
     "prettier": "^3.0.0"
   },
   "lint-staged": {
+    "cwd": "apps/web",
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
