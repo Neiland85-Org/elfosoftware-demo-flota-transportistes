@@ -19,18 +19,19 @@ services:
 
   backend:
     build:
-      context: ../apps/backend
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: Dockerfile.backend
     ports:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql://demo_user:demo_password@db:5432/flota_demo
+      - PYTHONPATH=/app/src
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      - ../apps/backend:/app
-    command: uvicorn src.presentation.api.main:app --host 0.0.0.0 --port 8000 --reload
+      - ..:/app
+    command: uvicorn src.elfosoftware_flota.presentation.api.main:app --host 0.0.0.0 --port 8000 --reload
 
   frontend:
     build:
