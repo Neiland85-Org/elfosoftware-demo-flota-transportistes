@@ -147,7 +147,7 @@ jobs:
           if [ -d tests ]; then
             echo "Ejecutando pytest..."
             echo "Running pytest..."
-            export PYTHONPATH="$PWD/src:$PYTHONPATH"
+            export PYTHONPATH="$PWD/src:$PWD/apps/backend/src:$PYTHONPATH"
             pytest -q
           else
             echo "tests/ no existe, omitido."
