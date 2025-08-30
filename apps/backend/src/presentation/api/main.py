@@ -40,7 +40,9 @@ async def api_root():
 # Add your API routes here
 from .routes.flota_routes import router as flota_router
 from .routes.vehiculo_routes import router as vehiculo_router
+from .routes.cmr_routes import router as cmr_router
 
 # Include routers
 app.include_router(flota_router)
 app.include_router(vehiculo_router)
+app.include_router(cmr_router)
