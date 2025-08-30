@@ -3,7 +3,8 @@ Tests for the backend API health endpoint
 """
 
 import pytest
-from httpx import AsyncClient
+import pytest_asyncio
+from httpx import AsyncClient, ASGITransport
 from fastapi.testclient import TestClient
 
 from src.presentation.api.main import app
@@ -15,10 +16,9 @@ def client():
     return TestClient(app)
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 async def async_client():
     """Async test client fixture"""
-    from httpx import ASGITransport
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://testserver") as client:
         yield client
 
