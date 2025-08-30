@@ -107,37 +107,38 @@ jobs:
           echo "🔄 El próximo release se publicará automáticamente"
 
   # Job opcional para publicar la web app cuando se crea un release
-  publish-web:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+  # DESHABILITADO: La acción peaceiris/actions-gh-pages no está permitida en este repositorio
+  # publish-web:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     pages: write
+  #     id-token: write
+  #   needs: release-please
+  #   if: ${{ needs.release-please.outputs.release_created }}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: apps/web/package-lock.json
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '20'
+  #         cache: 'npm'
+  #         cache-dependency-path: apps/web/package-lock.json
 
-      - name: Install dependencies
-        working-directory: apps/web
-        run: npm ci
+  #     - name: Install dependencies
+  #       working-directory: apps/web
+  #       run: npm ci
 
-      - name: Build web app
-        working-directory: apps/web
-        run: npm run build
+  #     - name: Build web app
+  #       working-directory: apps/web
+  #       run: npm run build
 
-      - name: Deploy to GitHub Pages (opcional)
-        if: contains(github.event.head_commit.modified, 'apps/web')
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: apps/web/out
-          publish_branch: gh-pages
+  #     - name: Deploy to GitHub Pages (opcional)
+  #       if: contains(github.event.head_commit.modified, 'apps/web')
+  #       uses: peaceiris/actions-gh-pages@v4
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         publish_dir: apps/web/out
+  #         publish_branch: gh-pages

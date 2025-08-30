@@ -49,5 +49,13 @@
     "*.{json,css,md}": [
       "prettier --write"
     ]
-  }
+  },
+  "main": "next.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

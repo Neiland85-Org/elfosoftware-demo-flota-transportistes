@@ -50,10 +50,22 @@ updates:
       - "dependencies"
       - "javascript"
       - "web"
+    ignore:
+      # React 19+ no es compatible con Next.js 14
+      - dependency-name: "react"
+        versions: [">=19.0.0"]
+      - dependency-name: "react-dom"
+        versions: [">=19.0.0"]
+      # Mantener versiones estables de Next.js
+      - dependency-name: "next"
+        versions: [">=15.0.0"]
+      # Evitar actualizaciones mayores de TypeScript que puedan romper compatibilidad
+      - dependency-name: "typescript"
+        versions: [">=6.0.0"]
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/apps/backend"
     schedule:
       interval: "weekly"
       day: "monday"
@@ -66,6 +78,24 @@ updates:
     labels:
       - "docker"
       - "infrastructure"
+      - "backend"
+
+  # Enable version updates for Docker (web app)
+  - package-ecosystem: "docker"
+    directory: "/apps/web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    labels:
+      - "docker"
+      - "infrastructure"
+      - "web"
 
 # Global configuration
 enable-beta-ecosystems: true
