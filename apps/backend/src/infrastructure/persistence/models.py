@@ -1,7 +1,7 @@
 """
 SQLAlchemy models for the application
 """
-from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, Enum
+from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
@@ -32,3 +32,16 @@ class VehiculoModel(Base):
 
     def __repr__(self):
         return f"<VehiculoModel(id={self.id}, matricula={self.matricula}, tipo={self.tipo.value})>"
+
+
+class TransportModel(Base):
+    """SQLAlchemy model for Transport entity"""
+    __tablename__ = "transports"
+
+    id = Column(String, primary_key=True, index=True)
+    code = Column(String, unique=True, index=True, nullable=False)
+    capacity = Column(Float, nullable=False)
+    active = Column(Boolean, nullable=False, default=True)
+
+    def __repr__(self):
+        return f"<TransportModel(id={self.id}, code={self.code}, capacity={self.capacity})>"
