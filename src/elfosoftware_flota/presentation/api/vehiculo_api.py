@@ -145,7 +145,6 @@ async def crear_vehiculo(
     repository: IVehiculoRepository = Depends(get_vehiculo_repository)
 ) -> VehiculoDTO:
     """Crear un nuevo vehículo."""
-       fix/pydantic-v2-migration
     # Verificar si ya existe un vehículo con esa matrícula
     matricula_obj = Matricula(valor=vehiculo_data.matricula)
     print(f"📥 Recibidos datos: {vehiculo_data}")
@@ -163,7 +162,6 @@ async def crear_vehiculo(
             detail=f"Error en matrícula: {str(e)}"
         )
 
-         main
     if await repository.exists_by_matricula(matricula_obj):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
