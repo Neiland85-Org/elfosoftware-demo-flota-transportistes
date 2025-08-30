@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslationContext } from '@/lib/hooks/TranslationProvider';
+import { useTranslationContext } from '@/lib/hooks';
 import Link from 'next/link';
 
 interface LayoutProps {

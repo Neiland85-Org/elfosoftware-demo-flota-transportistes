@@ -1,7 +1,7 @@
 'use client';
 
 import Layout from '@/components/Layout';
-import { TranslationProvider } from '@/lib/hooks/TranslationProvider';
+import { TranslationProvider } from '@/lib/hooks';
 
 export default function ClientLayout({
   children,
