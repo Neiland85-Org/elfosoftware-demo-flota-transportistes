@@ -1,21 +1,11 @@
-name: "CodeQL Security Analysis (Disabled)"
+name: CodeQL Analysis (Disabled)
 
-# 🚫 TEMPORALMENTE DESHABILITADO
-# Motivo: Restricciones de organización requieren actions locales
-# Para re-habilitar: Crear forks locales de las actions requeridas
-# o contactar al administrador para permitir actions externas
+on:  # Triggers: vacío para deshabilitar
+  workflow_dispatch:  # Permite ejecución manual si es necesario
 
-on:
-  workflow_dispatch: # Solo se puede ejecutar manualmente
-
-jobs:
+jobs:  # Jobs: vacío o con un job placeholder
   disabled:
-    name: "CodeQL Analysis (Disabled)"
     runs-on: ubuntu-latest
     steps:
-    - name: Skip Analysis
-      run: |
-        echo "🚫 CodeQL analysis disabled due to organization action restrictions"
-        echo "📝 To re-enable: Create local forks of required actions or allow external actions"
-        echo "🔧 Required actions: actions/checkout, github/codeql-action"
-        echo "📋 Current status: Waiting for organization policy update"
+      - name: Skip CodeQL
+        run: echo "CodeQL disabled for this workflow"

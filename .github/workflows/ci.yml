@@ -2,12 +2,12 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop, chore/dev-env-ci ]
+    branches: [ main, develop, origin/chore/dev-env-ci ]
   pull_request:
-    branches: [ main, develop, chore/dev-env-ci ]
+    branches: [ main, develop, origin/chore/dev-env-ci ]
 
 env:
-  PYTHON_VERSION: "3.12"
+  PYTHON_VERSION: "3.11"
 
 jobs:
   lint-and-test:
@@ -17,16 +17,16 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Set up Python
-      run: |
-        # Instalar Python usando el sistema
-        python3 --version
-        python3 -m pip install --upgrade pip
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
 
     - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install ruff mypy black isort pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f pyproject.toml ]; then pip install -e .; fi
@@ -52,7 +52,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest --cov=src --cov-report=xml --cov-report=html -m "not integration" || true
+        pytest --cov=src --cov-report=xml --cov-report=html || true
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
@@ -141,21 +141,12 @@ jobs:
       - name: Backend tests (pytest)
         run: |
           if [ -d apps/backend ]; then
-            echo "🚀 Ejecutando tests del backend..."
-            echo "🚀 Running backend tests..."
-            cd apps/backend
-            # Instalar dependencias del backend
-            if [ -f pyproject.toml ]; then
-              echo "📦 Instalando dependencias del backend..."
-              pip install -e .
-              pip install -e ".[dev]"
-            fi
-            # Ejecutar tests con configuración del pyproject.toml
-            echo "🧪 Ejecutando pytest..."
-            pytest tests/ -v --tb=short --cov=src --cov-report=term-missing
+            echo "Ejecutando pytest..."
+            echo "Running pytest..."
+            pytest -q
           else
-            echo "📭 apps/backend no existe, tests omitidos."
-            echo "📭 apps/backend not present, tests skipped."
+            echo "apps/backend no existe, omitido."
+            echo "apps/backend not present, skipped."
           fi
 
       - name: Setup Node
@@ -164,6 +155,9 @@ jobs:
         with:
           node-version: "20"
           cache: "npm"
+          cache-dependency-path: |
+            apps/web/package-lock.json
+            apps/web/npm-shrinkwrap.json
 
       - name: Frontend install
         if: steps.detect_frontend.outputs.has_frontend == 'true'

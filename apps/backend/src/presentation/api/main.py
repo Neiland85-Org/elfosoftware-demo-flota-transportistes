@@ -1,58 +1,44 @@
 """
-Backend API for Elfosoftware Demo Flota Transportistes
-FastAPI application with health check endpoint
+Main FastAPI application for Elfosoftware Demo Flota Transportistes
 """
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # Create FastAPI application
 app = FastAPI(
-    title="Elfosoftware Demo Flota Transportistes API",
-    description="Backend API for fleet management system",
+    title="Elfosoftware Demo - Flota Transportistes API",
+    description="API REST para gestión de flota de transportistas",
     version="0.1.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
 
-# Add CORS middleware
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Configure appropriately for production
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Allow frontend origin
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def root():
+    """Root endpoint"""
+    return {"message": "Elfosoftware Demo - Flota Transportistes API", "status": "running"}
 
-@app.get("/health", tags=["Health"])
+@app.get("/health")
 async def health_check():
-    """
-    Health check endpoint
-    Returns the status of the API
-    """
+    """Health check endpoint"""
     return {"status": "ok"}
 
+@app.get("/api/v1/")
+async def api_root():
+    """API root endpoint"""
+    return {"message": "API v1", "version": "0.1.0"}
 
-@app.get("/", tags=["Root"])
-async def root():
-    """
-    Root endpoint
-    Returns basic API information
-    """
-    return {
-        "message": "Elfosoftware Demo Flota Transportistes API",
-        "version": "0.1.0",
-        "status": "running"
-    }
+# Add your API routes here
+from .routes.flota_routes import router as flota_router
 
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True,
-        log_level="info"
-    )
+# Include routers
+app.include_router(flota_router)

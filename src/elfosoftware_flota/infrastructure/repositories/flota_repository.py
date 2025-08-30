@@ -74,7 +74,7 @@ class FlotaRepository(IFlotaRepository):
 
     async def find_all_activas(self) -> List[Flota]:
         """Retorna todas las flotas activas."""
-        stmt = select(FlotaModel).where(FlotaModel.activo)
+        stmt = select(FlotaModel).where(FlotaModel.activo == True)
         result = await self.session.execute(stmt)
         flota_models = result.scalars().all()
 
@@ -117,6 +117,6 @@ class FlotaRepository(IFlotaRepository):
     async def count_activas(self) -> int:
         """Cuenta el número de flotas activas."""
         from sqlalchemy import func
-        stmt = select(func.count()).where(FlotaModel.activo)
+        stmt = select(func.count()).where(FlotaModel.activo == True)
         result = await self.session.execute(stmt)
         return result.scalar_one()

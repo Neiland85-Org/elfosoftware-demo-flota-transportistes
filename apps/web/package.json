@@ -1,6 +1,6 @@
 {
   "name": "@elfosoftware/flota-web",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -42,7 +42,6 @@
     "prettier": "^3.0.0"
   },
   "lint-staged": {
-    "cwd": "apps/web",
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
       "prettier --write"

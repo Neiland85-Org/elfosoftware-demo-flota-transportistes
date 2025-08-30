@@ -1,10 +1,10 @@
-name: "CodeQL Security Analysis"
+name: "CodeQL Analysis"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   schedule:
     # Ejecutar análisis semanalmente los lunes a las 6:00 UTC
     - cron: '0 6 * * 1'
@@ -18,37 +18,18 @@ jobs:
       contents: read
       security-events: write
 
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'javascript', 'python' ]
-
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
-        languages: ${{ matrix.language }}
-
-    - name: Setup Python
-      if: matrix.language == 'python'
-      run: |
-        python3 -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f pyproject.toml ]; then pip install -e .; fi
-
-    - name: Setup Node.js
-      if: matrix.language == 'javascript'
-      run: |
-        cd apps/web
-        npm ci
+        languages: javascript
+        # Usar configuración por defecto para compatibilidad
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"

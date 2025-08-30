@@ -7,8 +7,8 @@ Utiliza SQLAlchemy con configuración asíncrona.
 import os
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
 # Configuración de la base de datos
@@ -24,9 +24,10 @@ engine = create_async_engine(
     poolclass=NullPool,  # Deshabilitar connection pooling para desarrollo
 )
 
-# Crear session factory asíncrona
-async_session_maker = async_sessionmaker(
+# Crear session factory
+async_session_maker = sessionmaker(
     bind=engine,
+    class_=AsyncSession,
     expire_on_commit=False
 )
 
@@ -46,16 +47,18 @@ async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
 
 async def create_tables() -> None:
     """Crea todas las tablas en la base de datos."""
+    from sqlalchemy import MetaData
+
     # Importar aquí para evitar dependencias circulares
-    from elfosoftware_flota.infrastructure.persistence.models import Base
+    from elfosoftware_flota.infrastructure.persistence.models import metadata
 
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(metadata.create_all)
 
 
 async def drop_tables() -> None:
     """Elimina todas las tablas de la base de datos."""
-    from elfosoftware_flota.infrastructure.persistence.models import Base
+    from elfosoftware_flota.infrastructure.persistence.models import metadata
 
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(metadata.drop_all)

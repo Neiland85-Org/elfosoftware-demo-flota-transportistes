@@ -6,10 +6,10 @@ Utiliza SQLAlchemy con configuración asíncrona.
 
 from datetime import date, datetime
 from typing import List
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 from sqlalchemy import Boolean, Column, Date, DateTime, Float, ForeignKey, Integer, String, Table, Text
-from sqlalchemy.dialects.postgresql import UUID as SQLUUID
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from elfosoftware_flota.domain.value_objects.matricula import Matricula
@@ -24,16 +24,16 @@ class Base(DeclarativeBase):
 flota_transportista_association = Table(
     'flota_transportista',
     Base.metadata,
-    Column('flota_id', SQLUUID(as_uuid=True), ForeignKey('flota.id'), primary_key=True),
-    Column('transportista_id', SQLUUID(as_uuid=True), ForeignKey('transportista.id'), primary_key=True)
+    Column('flota_id', UUID(as_uuid=True), ForeignKey('flota.id'), primary_key=True),
+    Column('transportista_id', UUID(as_uuid=True), ForeignKey('transportista.id'), primary_key=True)
 )
 
 # Tabla de asociación muchos a muchos entre Flota y Vehiculo
 flota_vehiculo_association = Table(
     'flota_vehiculo',
     Base.metadata,
-    Column('flota_id', SQLUUID(as_uuid=True), ForeignKey('flota.id'), primary_key=True),
-    Column('vehiculo_id', SQLUUID(as_uuid=True), ForeignKey('vehiculo.id'), primary_key=True)
+    Column('flota_id', UUID(as_uuid=True), ForeignKey('flota.id'), primary_key=True),
+    Column('vehiculo_id', UUID(as_uuid=True), ForeignKey('vehiculo.id'), primary_key=True)
 )
 
 
@@ -42,7 +42,7 @@ class FlotaModel(Base):
 
     __tablename__ = "flota"
 
-    id: Mapped[UUID] = mapped_column(SQLUUID(as_uuid=True), primary_key=True, default=uuid4)
+    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     nombre: Mapped[str] = mapped_column(String(100), nullable=False, index=True)
     descripcion: Mapped[str] = mapped_column(Text, nullable=True)
     activo: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False, index=True)
@@ -67,7 +67,7 @@ class TransportistaModel(Base):
 
     __tablename__ = "transportista"
 
-    id: Mapped[UUID] = mapped_column(SQLUUID(as_uuid=True), primary_key=True, default=uuid4)
+    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     nombre: Mapped[str] = mapped_column(String(100), nullable=False)
     apellido: Mapped[str] = mapped_column(String(100), nullable=False)
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True, index=True)
@@ -92,7 +92,7 @@ class VehiculoModel(Base):
 
     __tablename__ = "vehiculo"
 
-    id: Mapped[UUID] = mapped_column(SQLUUID(as_uuid=True), primary_key=True, default=uuid4)
+    id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     matricula_valor: Mapped[str] = mapped_column(String(10), nullable=False, unique=True, index=True)
     marca: Mapped[str] = mapped_column(String(50), nullable=False)
     modelo: Mapped[str] = mapped_column(String(50), nullable=False)

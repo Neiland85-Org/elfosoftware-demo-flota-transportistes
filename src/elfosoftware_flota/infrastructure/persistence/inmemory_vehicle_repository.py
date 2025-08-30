@@ -14,7 +14,7 @@ from elfosoftware_flota.domain.value_objects.matricula import Matricula
 class InMemoryVehicleRepository(IVehiculoRepository):
     """Implementación en memoria del repositorio de Vehiculo."""
 
-    def __init__(self) -> None:
+    def __init__(self):
         """Inicializa el repositorio con un diccionario vacío."""
         self._vehicles: Dict[UUID, Vehiculo] = {}
         self._matricula_index: Dict[str, UUID] = {}
