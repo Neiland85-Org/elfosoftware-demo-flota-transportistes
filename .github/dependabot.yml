@@ -57,6 +57,10 @@ updates:
     labels:
       - "github-actions"
       - "ci/cd"
+    ignore:
+      # Ignorar actualizaciones mayores de actions/checkout
+      - dependency-name: "actions/checkout"
+        update-types: ["version-update:semver-major"]
 
   # Enable version updates for npm packages in web app
   - package-ecosystem: "npm"
@@ -87,6 +91,13 @@ updates:
       - dependency-name: "@typescript-eslint/*"
         update-types: ["version-update:semver-major"]
       - dependency-name: "eslint-*"
+        update-types: ["version-update:semver-major"]
+      # Ignorar actualizaciones mayores de herramientas de desarrollo
+      - dependency-name: "lint-staged"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "husky"
         update-types: ["version-update:semver-major"]
 
 # Global configuration
