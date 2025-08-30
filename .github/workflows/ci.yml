@@ -17,9 +17,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      run: |
-        git clone https://github.com/${{ github.repository }}.git .
-        git checkout ${{ github.sha }}
+      uses: actions/checkout@v4
 
     - name: Set up Python
       run: |

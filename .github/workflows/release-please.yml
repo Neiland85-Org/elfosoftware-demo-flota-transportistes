@@ -19,10 +19,9 @@ jobs:
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - name: Checkout repository
-        run: |
-          git clone https://github.com/${{ github.repository }}.git .
-          git checkout ${{ github.sha }}
-          git fetch --tags
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Para obtener tags también
 
       - name: Run release-please
         id: release

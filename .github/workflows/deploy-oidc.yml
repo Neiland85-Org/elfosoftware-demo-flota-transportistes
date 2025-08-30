@@ -21,9 +21,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      run: |
-        git clone https://github.com/${{ github.repository }}.git .
-        git checkout ${{ github.sha }}
+      uses: actions/checkout@v4
 
     - name: Configure AWS credentials using OIDC
       run: |
@@ -67,9 +65,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      run: |
-        git clone https://github.com/${{ github.repository }}.git .
-        git checkout ${{ github.sha }}
+      uses: actions/checkout@v4
 
     - name: Azure Login using OIDC
       run: |
@@ -90,9 +86,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      run: |
-        git clone https://github.com/${{ github.repository }}.git .
-        git checkout ${{ github.sha }}
+      uses: actions/checkout@v4
 
     - name: Authenticate to Google Cloud using OIDC
       run: |
