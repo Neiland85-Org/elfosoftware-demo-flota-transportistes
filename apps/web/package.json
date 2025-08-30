@@ -32,7 +32,7 @@
     "eslint": "^8.0.0",
     "eslint-config-airbnb": "^19.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-next": "^14.0.0",
+    "eslint-config-next": "^15.5.2",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-jsx-a11y": "^6.0.0",
     "eslint-plugin-react": "^7.0.0",
