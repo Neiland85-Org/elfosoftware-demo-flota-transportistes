@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "elfosoftware-demo-flota-transportistes"
-version = "0.3.0"
+version = "0.4.0"
 description = "Sistema de gestión de flota de transportistas - Arquitectura DELFOS"
 readme = "README.md"
 license = {text = "MIT"}
