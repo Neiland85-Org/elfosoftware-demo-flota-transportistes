@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.4.0](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.3.0...v0.4.0) (2025-08-30)
+
+
+### Features
+
+* Implement CMR OCR mock functionality ([0ddf687](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/0ddf68788fc03b07897e7adf13468c011d50f1b8))
+* Implement CMR OCR mock functionality ([5d83622](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/5d836222e2e089edcb550cfd48165ba43d8ed6e4))
+* Implementar CRUD completo de vehículos ([b1e878b](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/b1e878b360d75e5f000966e6bc57de4073392039))
+* Implementar CRUD completo de vehículos ([81346ae](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/81346ae1b015da2480dbeb2a3b795a729c01a37a))
+
+
+### Bug Fixes
+
+* Add missing datetime import in CMR API tests ([bf1da52](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/bf1da5263d3e8018cc17df1643f4961db0f1559e))
+* Corregir errores en tests de integración de vehículos ([6f1ca61](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/6f1ca61d8135ce63ec8c5c529c229589e8fdbbed))
+
 ## [0.3.0](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.2.0...v0.3.0) (2025-08-30)
 
 
