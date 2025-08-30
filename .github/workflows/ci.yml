@@ -140,13 +140,14 @@ jobs:
 
       - name: Backend tests (pytest)
         run: |
-          if [ -d apps/backend ]; then
+          if [ -d tests ]; then
             echo "Ejecutando pytest..."
             echo "Running pytest..."
+            export PYTHONPATH="$PWD/src:$PYTHONPATH"
             pytest -q
           else
-            echo "apps/backend no existe, omitido."
-            echo "apps/backend not present, skipped."
+            echo "tests/ no existe, omitido."
+            echo "tests/ not present, skipped."
           fi
 
       - name: Setup Node
@@ -185,8 +186,8 @@ jobs:
             echo "* Backend tests: ejecutados" >> $GITHUB_STEP_SUMMARY
             echo "* Backend tests: executed" >> $GITHUB_STEP_SUMMARY
           else
-            echo "* Backend tests: omitidos (sin apps/backend)" >> $GITHUB_STEP_SUMMARY
-            echo "* Backend tests: skipped (no apps/backend)" >> $GITHUB_STEP_SUMMARY
+            echo "* Backend tests: omitidos (sin tests/)" >> $GITHUB_STEP_SUMMARY
+            echo "* Backend tests: skipped (no tests/)" >> $GITHUB_STEP_SUMMARY
           fi
           if [ "${{ steps.detect_frontend.outputs.has_frontend }}" = "true" ]; then
             echo "* Frontend: build ejecutado" >> $GITHUB_STEP_SUMMARY
