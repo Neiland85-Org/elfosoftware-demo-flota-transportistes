@@ -73,7 +73,7 @@ async def create_transport(
     """Create a new transport"""
     try:
         transport = service.execute(uow, request.code, request.capacity)
-        return TransportResponse.from_orm(transport)
+        return TransportResponse.model_validate(transport)
     except DomainError as e:
         handle_domain_exceptions(e)
     except ValueError as e:
@@ -89,7 +89,7 @@ async def list_transports(
     """List all transports, optionally filtered by active status"""
     try:
         transports = service.execute(uow, active=active)
-        return [TransportResponse.from_orm(transport) for transport in transports]
+        return [TransportResponse.model_validate(transport) for transport in transports]
     except DomainError as e:
         handle_domain_exceptions(e)
 
@@ -110,7 +110,7 @@ async def update_transport(
             capacity=request.capacity, 
             active=request.active
         )
-        return TransportResponse.from_orm(transport)
+        return TransportResponse.model_validate(transport)
     except DomainError as e:
         handle_domain_exceptions(e)
     except ValueError as e:

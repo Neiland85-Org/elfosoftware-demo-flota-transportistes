@@ -35,4 +35,6 @@ def create_tables():
     """
     Create all database tables
     """
+    # Import models to register them with the Base
+    from src.infrastructure.persistence.models import TransportModel, VehiculoModel
     Base.metadata.create_all(bind=engine)

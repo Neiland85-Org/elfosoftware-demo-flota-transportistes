@@ -3,11 +3,9 @@ SQLAlchemy models for the application
 """
 from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from src.domain.entities.vehiculo import TipoVehiculo, EstadoVehiculo
-
-Base = declarative_base()
+from src.infrastructure.persistence.session import Base
 
 class VehiculoModel(Base):
     """SQLAlchemy model for Vehiculo entity"""
@@ -23,12 +21,8 @@ class VehiculoModel(Base):
     fecha_matriculacion = Column(DateTime, nullable=False)
     fecha_ultimo_mantenimiento = Column(DateTime, nullable=True)
     kilometraje = Column(Integer, nullable=False, default=0)
-    flota_id = Column(String, ForeignKey("flotas.id"), nullable=True)
-    transportista_id = Column(String, ForeignKey("transportistas.id"), nullable=True)
-
-    # Relationships
-    flota = relationship("FlotaModel", back_populates="vehiculos")
-    transportista = relationship("TransportistaModel", back_populates="vehiculos")
+    flota_id = Column(String, nullable=True)  # Removed FK constraint
+    transportista_id = Column(String, nullable=True)  # Removed FK constraint
 
     def __repr__(self):
         return f"<VehiculoModel(id={self.id}, matricula={self.matricula}, tipo={self.tipo.value})>"
