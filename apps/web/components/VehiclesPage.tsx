@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslationContext } from '@/lib/hooks';
+import { useTranslationContext } from '@/lib/hooks/TranslationProvider';
 import { useEffect, useState } from 'react';
 
 interface Vehicle {
