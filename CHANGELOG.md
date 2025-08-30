@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.4.0...v0.4.1) (2025-08-30)
+
+
+### Bug Fixes
+
+* correct web directory errors and improve configuration ([7a25c6d](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/7a25c6dc8c6f901f67012b2a5fc006378c9d2469))
+* properly track VehiclesPage.tsx component ([25359b3](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/25359b362032299fbc17449daa6d0e8b227e926f))
+* resolve Next.js build errors ([b188428](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/b188428a478c6cc0b3a7b9b5d6e60033143d3114))
+
 ## [0.4.0](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.3.0...v0.4.0) (2025-08-30)
 
 
