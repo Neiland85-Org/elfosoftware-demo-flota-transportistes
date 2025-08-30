@@ -29,7 +29,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install ruff mypy black isort pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f pyproject.toml ]; then pip install -e .; fi
+        if [ -f pyproject.toml ]; then pip install -e ".[dev]"; fi
 
     - name: Lint with Ruff
       run: |
@@ -124,9 +124,9 @@ jobs:
             pip install -r requirements-dev.txt
           fi
           if grep -q "\[project\]" pyproject.toml 2>/dev/null; then
-            echo "[Instalando dependencias declaradas en pyproject]"
-            echo "[Installing dependencies declared in pyproject]"
-            pip install -e .
+            echo "[Instalando dependencias declaradas en pyproject con extras dev]"
+            echo "[Installing dependencies declared in pyproject with dev extras]"
+            pip install -e ".[dev]"
           fi
 
       - name: Run pre-commit (lint + format checks)
