@@ -40,17 +40,17 @@ async def extract_cmr_data(
     """
     try:
         # Validate file type
-        if not file.filename or not file.filename.lower().endswith('.pdf'):
-            if file.content_type and file.content_type != "application/pdf":
-                raise HTTPException(
-                    status_code=400,
-                    detail="Only PDF files are supported"
-                )
-            elif not file.filename or not file.filename.lower().endswith('.pdf'):
-                raise HTTPException(
-                    status_code=400,
-                    detail="Only PDF files are supported"
-                )
+        if file.filename and not file.filename.lower().endswith('.pdf'):
+            raise HTTPException(
+                status_code=400,
+                detail="Only PDF files are supported"
+            )
+
+        if file.content_type and file.content_type != "application/pdf":
+            raise HTTPException(
+                status_code=400,
+                detail="Only PDF files are supported"
+            )
 
         # Read file content
         file_content = await file.read()

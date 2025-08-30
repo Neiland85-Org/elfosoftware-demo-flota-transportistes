@@ -50,7 +50,7 @@ class TestVehiculoAPI:
         assert data["id"] == sample_vehiculo.id
         assert data["matricula"] == sample_vehiculo.matricula
 
-    def test_obtener_vehiculo_inexistente(self, client: TestClient):
+    def test_obtener_vehiculo_inexistente(self, client: TestClient, db_session: Session):
         """Test getting a non-existent vehicle"""
         response = client.get("/api/v1/vehiculos/VEH999")
 
@@ -206,7 +206,7 @@ class TestVehiculoAPI:
         # This should fail due to unique constraint on matricula
         assert response.status_code == 400
 
-    def test_actualizar_vehiculo_inexistente(self, client: TestClient):
+    def test_actualizar_vehiculo_inexistente(self, client: TestClient, db_session: Session):
         """Test updating a non-existent vehicle"""
         update_data = {"marca": "NewBrand"}
 
