@@ -3,7 +3,7 @@ Unit tests for CMR domain entities and services
 """
 import pytest
 from datetime import datetime
-from domain.entities.cmr_document import (
+from src.domain.entities.cmr_document import (
     CMRDocument,
     Remitente,
     Destinatario,
@@ -12,7 +12,7 @@ from domain.entities.cmr_document import (
     EstadoCMR,
     RawCMRData
 )
-from domain.services.cmr_normalizer import CMRNormalizer, MockCMRExtractor
+from src.domain.services.cmr_normalizer import CMRNormalizer, MockCMRExtractor
 
 class TestCMRDocument:
     """Test CMR document entity"""

@@ -7,8 +7,8 @@ from datetime import datetime
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
-from application.use_cases.cmr_use_cases import ProcesarCMRUseCase, ValidarCMRUseCase
-from domain.services.cmr_normalizer import CMRNormalizer, MockCMRExtractor
+from src.application.use_cases.cmr_use_cases import ProcesarCMRUseCase, ValidarCMRUseCase
+from src.domain.services.cmr_normalizer import CMRNormalizer, MockCMRExtractor
 
 class TestCMRApi:
     """Test CMR API endpoints"""

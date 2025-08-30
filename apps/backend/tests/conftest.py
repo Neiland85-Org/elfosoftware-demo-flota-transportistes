@@ -11,7 +11,7 @@ from src.domain.entities.vehiculo import Vehiculo, TipoVehiculo, EstadoVehiculo
 from src.domain.repositories.interfaces import VehiculoRepository
 
 # Infrastructure imports
-from src.infrastructure.persistence.models import Base
+from src.infrastructure.persistence.models import Base, VehiculoModel, FlotaModel, TransportistaModel
 from src.infrastructure.repositories.vehiculo_repository import SQLAlchemyVehiculoRepository
 
 # Application imports
