@@ -8,7 +8,7 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3 # Reducido de 10 a 3
     commit-message:
       prefix: "deps"
       prefix-development: "deps-dev"
@@ -16,6 +16,10 @@ updates:
     labels:
       - "dependencies"
       - "python"
+    ignore:
+      # Ignorar actualizaciones mayores que pueden romper compatibilidad
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # Enable version updates for Python packages (backend)
   - package-ecosystem: "pip"
@@ -25,7 +29,7 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 2 # Reducido de 5 a 2
     commit-message:
       prefix: "deps"
       prefix-development: "deps-dev"
@@ -34,6 +38,9 @@ updates:
       - "dependencies"
       - "python"
       - "backend"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -43,7 +50,7 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 2 # Reducido de 5 a 2
     commit-message:
       prefix: "ci"
       include: "scope"
@@ -59,7 +66,7 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3 # Reducido de 10 a 3
     commit-message:
       prefix: "deps"
       prefix-development: "deps-dev"
@@ -68,6 +75,19 @@ updates:
       - "dependencies"
       - "npm"
       - "frontend"
+    ignore:
+      # Ignorar actualizaciones problemáticas de Next.js y React
+      - dependency-name: "next"
+        versions: [">=15.0.0"]
+      - dependency-name: "@types/react"
+        versions: [">=19.0.0"]
+      - dependency-name: "react"
+        versions: [">=19.0.0"]
+      # Ignorar actualizaciones mayores de ESLint y TypeScript
+      - dependency-name: "@typescript-eslint/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-*"
+        update-types: ["version-update:semver-major"]
 
 # Global configuration
 enable-beta-ecosystems: true
