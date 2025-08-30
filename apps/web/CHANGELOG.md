@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/flota-web-v0.2.1...flota-web-v0.2.2) (2025-08-30)
+
+
+### Bug Fixes
+
+* correct PostCSS configuration for Tailwind CSS v4 ([b27f4c2](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/b27f4c2e357d74c1a59f828c81a6ff435e49709a))
+
 ## [0.2.1](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/flota-web-v0.2.0...flota-web-v0.2.1) (2025-08-30)
 
 
