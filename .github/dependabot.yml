@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Enable version updates for Python packages
+  # Enable version updates for Python packages (root level)
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -16,6 +16,24 @@ updates:
     labels:
       - "dependencies"
       - "python"
+
+  # Enable version updates for Python packages (backend)
+  - package-ecosystem: "pip"
+    directory: "/apps/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+      - "backend"
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -48,24 +66,8 @@ updates:
       include: "scope"
     labels:
       - "dependencies"
-      - "javascript"
-      - "web"
-
-  # Enable version updates for Docker
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "Europe/Madrid"
-    open-pull-requests-limit: 5
-    commit-message:
-      prefix: "build"
-      include: "scope"
-    labels:
-      - "docker"
-      - "infrastructure"
+      - "npm"
+      - "frontend"
 
 # Global configuration
 enable-beta-ecosystems: true
