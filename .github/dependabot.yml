@@ -87,10 +87,16 @@ updates:
         versions: [">=19.0.0"]
       - dependency-name: "react"
         versions: [">=19.0.0"]
+      - dependency-name: "@types/react-dom"
+        versions: [">=19.0.0"]
+      - dependency-name: "react-dom"
+        versions: [">=19.0.0"]
       # Ignorar actualizaciones mayores de ESLint y TypeScript
       - dependency-name: "@typescript-eslint/*"
         update-types: ["version-update:semver-major"]
       - dependency-name: "eslint-*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
         update-types: ["version-update:semver-major"]
       # Ignorar actualizaciones mayores de herramientas de desarrollo
       - dependency-name: "lint-staged"
