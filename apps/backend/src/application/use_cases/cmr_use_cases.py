@@ -2,8 +2,8 @@
 CMR document processing use cases
 """
 from typing import Optional
-from domain.entities.cmr_document import CMRDocument
-from domain.services.cmr_normalizer import CMRNormalizer
+from src.domain.entities.cmr_document import CMRDocument
+from src.domain.services.cmr_normalizer import CMRNormalizer
 
 class ProcesarCMRUseCase:
     """Use case for processing CMR documents"""

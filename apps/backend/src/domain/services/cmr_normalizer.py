@@ -6,7 +6,7 @@ from typing import Optional, Dict, Any
 from datetime import datetime
 from abc import ABC, abstractmethod
 
-from domain.entities.cmr_document import (
+from src.domain.entities.cmr_document import (
     CMRDocument,
     Remitente,
     Destinatario,
@@ -173,14 +173,17 @@ class CMRNormalizer:
         """Extract CMR document number"""
         patterns = [
             r'N°\s*CMR[:\s]*([A-Z0-9\-]+)',
-            r'CMR[:\s]*([A-Z0-9\-]+)',
+            r'CMR[:\s]*([A-Z0-9\-]+)(?:\s|$)',  # Added word boundary
             r'Número[:\s]*([A-Z0-9\-]+)'
         ]
 
         for pattern in patterns:
             match = re.search(pattern, text, re.IGNORECASE)
             if match:
-                return match.group(1).strip()
+                cmr_number = match.group(1).strip()
+                # Validate that the CMR number contains at least one uppercase letter or digit
+                if re.search(r'[A-Z0-9]', cmr_number):
+                    return cmr_number
 
         return "CMR-UNKNOWN"
 

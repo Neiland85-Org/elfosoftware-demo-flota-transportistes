@@ -5,9 +5,9 @@ from typing import Dict, Any
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from fastapi.responses import JSONResponse
 
-from application.use_cases.cmr_use_cases import ProcesarCMRUseCase, ValidarCMRUseCase
-from domain.services.cmr_normalizer import CMRNormalizer, MockCMRExtractor
-from domain.entities.cmr_document import CMRDocument
+from src.application.use_cases.cmr_use_cases import ProcesarCMRUseCase, ValidarCMRUseCase
+from src.domain.services.cmr_normalizer import CMRNormalizer, MockCMRExtractor
+from src.domain.entities.cmr_document import CMRDocument
 
 # Dependency injection
 def get_cmr_normalizer() -> CMRNormalizer:

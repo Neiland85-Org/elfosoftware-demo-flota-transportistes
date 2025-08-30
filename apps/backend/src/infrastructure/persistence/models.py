@@ -1,7 +1,7 @@
 """
 SQLAlchemy models for the application
 """
-from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, Enum
+from sqlalchemy import Column, String, Float, Integer, DateTime, ForeignKey, Enum, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
@@ -32,3 +32,43 @@ class VehiculoModel(Base):
 
     def __repr__(self):
         return f"<VehiculoModel(id={self.id}, matricula={self.matricula}, tipo={self.tipo.value})>"
+
+
+class FlotaModel(Base):
+    """SQLAlchemy model for Flota entity"""
+    __tablename__ = "flotas"
+
+    id = Column(String, primary_key=True, index=True)
+    nombre = Column(String, nullable=False)
+    descripcion = Column(String, nullable=True)
+    fecha_creacion = Column(DateTime, nullable=False, default=datetime.now)
+    activo = Column(Boolean, nullable=False, default=True)
+
+    # Relationships
+    vehiculos = relationship("VehiculoModel", back_populates="flota")
+    transportistas = relationship("TransportistaModel", back_populates="flota")
+
+    def __repr__(self):
+        return f"<FlotaModel(id={self.id}, nombre={self.nombre})>"
+
+
+class TransportistaModel(Base):
+    """SQLAlchemy model for Transportista entity"""
+    __tablename__ = "transportistas"
+
+    id = Column(String, primary_key=True, index=True)
+    nombre = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    telefono = Column(String, nullable=True)
+    licencia = Column(String, nullable=False)
+    fecha_nacimiento = Column(DateTime, nullable=True)
+    fecha_contratacion = Column(DateTime, nullable=False, default=datetime.now)
+    activo = Column(Boolean, nullable=False, default=True)
+    flota_id = Column(String, ForeignKey("flotas.id"), nullable=True)
+
+    # Relationships
+    vehiculos = relationship("VehiculoModel", back_populates="transportista")
+    flota = relationship("FlotaModel", back_populates="transportistas")
+
+    def __repr__(self):
+        return f"<TransportistaModel(id={self.id}, nombre={self.nombre})>"
