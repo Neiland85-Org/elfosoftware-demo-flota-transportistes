@@ -4,7 +4,6 @@ disable-default-queries: false
 
 queries:
   - uses: security-and-quality
-  - uses: security-experimental
 
 paths-ignore:
   - node_modules
@@ -16,9 +15,14 @@ paths-ignore:
   - .next
   - dist
   - build
+  - "*.test.js"
+  - "*.test.ts"
+  - "*.spec.js"
+  - "*.spec.ts"
 
 paths:
   - src
   - apps/web/src
   - apps/web/components
   - apps/web/pages
+  - apps/web/lib

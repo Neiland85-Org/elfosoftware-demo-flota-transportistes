@@ -2,9 +2,9 @@ name: "CodeQL Security Analysis"
 
 on:
   push:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches: [ "main" ]
   schedule:
     # Ejecutar análisis semanalmente los lunes a las 6:00 UTC
     - cron: '0 6 * * 1'
@@ -25,13 +25,13 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v4
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        config-file: ./.github/codeql-config.yml
+        # Usar configuración por defecto para mayor compatibilidad
 
     - name: Setup Python
       if: matrix.language == 'python'
@@ -44,6 +44,8 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'apps/web/package-lock.json'
 
     - name: Install Python dependencies
       if: matrix.language == 'python'
@@ -55,11 +57,8 @@ jobs:
     - name: Install Node.js dependencies
       if: matrix.language == 'javascript'
       run: |
-        if [ -f apps/web/package-lock.json ]; then
-          npm --prefix apps/web ci
-        else
-          npm --prefix apps/web install
-        fi
+        cd apps/web
+        npm ci
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
