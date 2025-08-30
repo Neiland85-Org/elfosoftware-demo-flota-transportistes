@@ -3,6 +3,7 @@ Integration tests for CMR API endpoints
 """
 import pytest
 from io import BytesIO
+from datetime import datetime
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
