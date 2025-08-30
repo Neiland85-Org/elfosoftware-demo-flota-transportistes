@@ -150,7 +150,7 @@ jobs:
 
       - name: Backend tests (pytest)
         run: |
-          if [ -d tests ]; then
+          if [ -d tests_unit ]; then
             echo "Ejecutando pytest..."
             echo "Running pytest..."
             echo "PYTHONPATH: $PYTHONPATH"
@@ -160,10 +160,10 @@ jobs:
             python -c "import sys; print('Python path:'); [print(p) for p in sys.path if 'src' in p or 'backend' in p]"
             python -c "from elfosoftware_flota.domain.entities.flota import Flota; print('Import test successful')"
             # Ejecutar pytest con rutas absolutas para evitar conflictos
-            pytest -q --ignore-glob="**/node_modules/**" tests apps/backend/tests
+            pytest -q --ignore-glob="**/node_modules/**" tests_unit apps/backend/tests
           else
-            echo "tests/ no existe, omitido."
-            echo "tests/ not present, skipped."
+            echo "tests_unit/ no existe, omitido."
+            echo "tests_unit/ not present, skipped."
           fi
 
       - name: Setup Node
