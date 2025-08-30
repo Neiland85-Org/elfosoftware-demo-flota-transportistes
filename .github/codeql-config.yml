@@ -1,0 +1,24 @@
+name: "CodeQL Configuration"
+
+disable-default-queries: false
+
+queries:
+  - uses: security-and-quality
+  - uses: security-experimental
+
+paths-ignore:
+  - node_modules
+  - .venv
+  - __pycache__
+  - .pytest_cache
+  - .mypy_cache
+  - .ruff_cache
+  - .next
+  - dist
+  - build
+
+paths:
+  - src
+  - apps/web/src
+  - apps/web/components
+  - apps/web/pages
