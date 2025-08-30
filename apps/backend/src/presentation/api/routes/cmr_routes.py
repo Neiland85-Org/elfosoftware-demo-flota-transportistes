@@ -39,14 +39,18 @@ async def extract_cmr_data(
     - **returns**: Normalized CMR document data
     """
     try:
-        # Validate file type
-        if file.filename and not file.filename.lower().endswith('.pdf'):
-            raise HTTPException(
-                status_code=400,
-                detail="Only PDF files are supported"
-            )
+        # Validate file - check if it's a PDF
+        is_valid_pdf = False
 
-        if file.content_type and file.content_type != "application/pdf":
+        # Check filename
+        if hasattr(file, 'filename') and file.filename and file.filename.lower().endswith('.pdf'):
+            is_valid_pdf = True
+
+        # Check content type
+        if hasattr(file, 'content_type') and file.content_type and file.content_type == "application/pdf":
+            is_valid_pdf = True
+
+        if not is_valid_pdf:
             raise HTTPException(
                 status_code=400,
                 detail="Only PDF files are supported"
@@ -73,6 +77,9 @@ async def extract_cmr_data(
 
         return cmr_document
 
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
