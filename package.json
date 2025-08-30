@@ -16,7 +16,7 @@
     "format:check": "npm run format:check --workspace=apps/web",
     "type-check": "npm run type-check --workspace=apps/web",
     "test": "npm run test --workspace=apps/web",
-    "prepare": "husky install || echo 'Husky not available, skipping git hooks setup'"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.0.0",

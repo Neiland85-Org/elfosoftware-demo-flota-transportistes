@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "elfosoftware-demo-flota-transportistes"
-version = "0.2.0"
+version = "0.1.0"
 description = "Sistema de gestión de flota de transportistas - Arquitectura DELFOS"
 readme = "README.md"
 license = {text = "MIT"}
@@ -36,6 +36,7 @@ dev = [
     "ruff>=0.1.0",
     "mypy>=1.7.0",
     "pre-commit>=3.5.0",
+    "pydantic[email]>=2.5.0",
 ]
 docs = [
     "mkdocs>=1.5.0",
@@ -97,8 +98,14 @@ strict_equality = true
 
 [tool.pytest.ini_options]
 minversion = "7.4"
-addopts = "-ra -q --strict-markers --disable-warnings"
+addopts = "-ra -q --strict-markers --disable-warnings --tb=short -v"
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests"
+]
+asyncio_mode = "auto"

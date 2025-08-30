@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Enable version updates for Python packages (root level)
+  # Enable version updates for Python packages
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -8,7 +8,7 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
-    open-pull-requests-limit: 3 # Reducido de 10 a 3
+    open-pull-requests-limit: 10
     commit-message:
       prefix: "deps"
       prefix-development: "deps-dev"
@@ -16,31 +16,6 @@ updates:
     labels:
       - "dependencies"
       - "python"
-    ignore:
-      # Ignorar actualizaciones mayores que pueden romper compatibilidad
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  # Enable version updates for Python packages (backend)
-  - package-ecosystem: "pip"
-    directory: "/apps/backend"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "Europe/Madrid"
-    open-pull-requests-limit: 2 # Reducido de 5 a 2
-    commit-message:
-      prefix: "deps"
-      prefix-development: "deps-dev"
-      include: "scope"
-    labels:
-      - "dependencies"
-      - "python"
-      - "backend"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: "github-actions"
@@ -50,17 +25,13 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
-    open-pull-requests-limit: 2 # Reducido de 5 a 2
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "ci"
       include: "scope"
     labels:
       - "github-actions"
       - "ci/cd"
-    ignore:
-      # Ignorar actualizaciones mayores de actions/checkout
-      - dependency-name: "actions/checkout"
-        update-types: ["version-update:semver-major"]
 
   # Enable version updates for npm packages in web app
   - package-ecosystem: "npm"
@@ -70,41 +41,31 @@ updates:
       day: "monday"
       time: "09:00"
       timezone: "Europe/Madrid"
-    open-pull-requests-limit: 3 # Reducido de 10 a 3
+    open-pull-requests-limit: 10
     commit-message:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
     labels:
       - "dependencies"
-      - "npm"
-      - "frontend"
-    ignore:
-      # Ignorar actualizaciones problemáticas de Next.js y React
-      - dependency-name: "next"
-        versions: [">=15.0.0"]
-      - dependency-name: "@types/react"
-        versions: [">=19.0.0"]
-      - dependency-name: "react"
-        versions: [">=19.0.0"]
-      - dependency-name: "@types/react-dom"
-        versions: [">=19.0.0"]
-      - dependency-name: "react-dom"
-        versions: [">=19.0.0"]
-      # Ignorar actualizaciones mayores de ESLint y TypeScript
-      - dependency-name: "@typescript-eslint/*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint-*"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "eslint"
-        update-types: ["version-update:semver-major"]
-      # Ignorar actualizaciones mayores de herramientas de desarrollo
-      - dependency-name: "lint-staged"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/node"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "husky"
-        update-types: ["version-update:semver-major"]
+      - "javascript"
+      - "web"
+
+  # Enable version updates for Docker
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Madrid"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    labels:
+      - "docker"
+      - "infrastructure"
 
 # Global configuration
 enable-beta-ecosystems: true

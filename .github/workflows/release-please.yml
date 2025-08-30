@@ -19,31 +19,18 @@ jobs:
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
       - name: Checkout repository
-        run: |
-          git clone https://github.com/${{ github.repository }}.git .
-          git checkout ${{ github.sha }}
-          git fetch --tags
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Run release-please
         id: release
-        run: |
-          # Instalar release-please CLI
-          npm install -g release-please
-
-          # Ejecutar release-please
-          if release-please release-pr \
-            --repo-url=${{ github.repository }} \
-            --config-file=release-please-config.json \
-            --manifest-file=.release-please-manifest.json \
-            --token=${{ secrets.GITHUB_TOKEN }}; then
-            echo "release_created=true" >> $GITHUB_OUTPUT
-            # Obtener el tag del release creado
-            TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-            echo "tag_name=$TAG" >> $GITHUB_OUTPUT
-          else
-            echo "release_created=false" >> $GITHUB_OUTPUT
-            echo "tag_name=" >> $GITHUB_OUTPUT
-          fi
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repo-url: ${{ github.repository }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
   # Job opcional para publicar a PyPI cuando se crea un release
   publish-python:
@@ -55,14 +42,12 @@ jobs:
     if: ${{ needs.release-please.outputs.release_created }}
     steps:
       - name: Checkout repository
-        run: |
-          git clone https://github.com/${{ github.repository }}.git .
-          git checkout ${{ github.sha }}
+        uses: actions/checkout@v5
 
       - name: Set up Python
-        run: |
-          python3 --version
-          python3 -m pip install --upgrade pip
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -75,12 +60,12 @@ jobs:
       - name: Check PyPI token availability
         id: check_token
         run: |
-          if [ -z "${{ secrets.PYPI_API_TOKEN }}" ] || [ "${{ secrets.PYPI_API_TOKEN }}" == "" ]; then
+          if [ -z "${{ secrets.PYPI_API_TOKEN }}" ]; then
             echo "token_available=false" >> $GITHUB_OUTPUT
-            echo "⚠️  PYPI_API_TOKEN no configurado o vacío"
+            echo "⚠️  PYPI_API_TOKEN no configurado"
           else
             echo "token_available=true" >> $GITHUB_OUTPUT
-            echo "✅ PYPI_API_TOKEN configurado correctamente"
+            echo "✅ PYPI_API_TOKEN configurado"
           fi
 
       - name: Publish to PyPI (opcional)
@@ -132,17 +117,14 @@ jobs:
     if: ${{ needs.release-please.outputs.release_created }}
     steps:
       - name: Checkout repository
-        run: |
-          git clone https://github.com/${{ github.repository }}.git .
-          git checkout ${{ github.sha }}
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        run: |
-          # Instalar Node.js usando el sistema
-          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-          node --version
-          npm --version
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/web/package-lock.json
 
       - name: Install dependencies
         working-directory: apps/web
@@ -154,17 +136,8 @@ jobs:
 
       - name: Deploy to GitHub Pages (opcional)
         if: contains(github.event.head_commit.modified, 'apps/web')
-        run: |
-          # Desplegar a GitHub Pages manualmente
-          echo "🚀 Desplegando a GitHub Pages..."
-          # Configurar git para GitHub Pages
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Crear rama gh-pages si no existe
-          git checkout --orphan gh-pages
-          git rm -rf .
-          cp -r apps/web/out/* .
-          git add .
-          git commit -m "Deploy to GitHub Pages"
-          git push origin gh-pages --force
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: apps/web/out
+          publish_branch: gh-pages

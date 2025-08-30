@@ -4,6 +4,7 @@ Endpoints REST para la gestión de Vehículos.
 Utiliza FastAPI con arquitectura limpia.
 """
 
+from datetime import date
 from typing import List
 from uuid import UUID
 
@@ -123,7 +124,7 @@ async def obtener_vehiculo_por_matricula(
     repository: IVehiculoRepository = Depends(get_vehiculo_repository)
 ) -> VehiculoDTO:
     """Obtener un vehículo por su matrícula."""
-    matricula_obj = Matricula(valor=matricula)
+    matricula_obj = Matricula(matricula)
     vehiculo = await repository.find_by_matricula(matricula_obj)
     if not vehiculo:
         raise HTTPException(
@@ -145,15 +146,13 @@ async def crear_vehiculo(
     repository: IVehiculoRepository = Depends(get_vehiculo_repository)
 ) -> VehiculoDTO:
     """Crear un nuevo vehículo."""
-    # Verificar si ya existe un vehículo con esa matrícula
-    matricula_obj = Matricula(valor=vehiculo_data.matricula)
     print(f"📥 Recibidos datos: {vehiculo_data}")
     print(f"📝 Matrícula: {vehiculo_data.matricula}")
     print(f"🏢 Marca: {vehiculo_data.marca}")
 
     try:
         # Verificar si ya existe un vehículo con esa matrícula
-        matricula_obj = Matricula(valor=vehiculo_data.matricula)
+        matricula_obj = Matricula(vehiculo_data.matricula)
         print(f"✅ Matrícula creada: {matricula_obj}")
     except Exception as e:
         print(f"❌ Error creando matrícula: {e}")
