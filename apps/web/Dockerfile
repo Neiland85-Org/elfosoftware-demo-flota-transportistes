@@ -1,5 +1,5 @@
 # Dockerfile for Frontend (Next.js)
-FROM node:18-alpine
+FROM node:24-alpine
 
 # Create non-root user
 RUN addgroup -g 1001 nodejs && \
