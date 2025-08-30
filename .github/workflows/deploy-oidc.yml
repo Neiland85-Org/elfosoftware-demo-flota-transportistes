@@ -7,7 +7,7 @@ on:
 
 env:
   AWS_REGION: eu-west-1
-  
+
 permissions:
   id-token: write   # Required for OIDC
   contents: read    # Required for checking out code
@@ -18,86 +18,96 @@ jobs:
     environment: production
     # Solo ejecutar en push a main (deshabilitar hasta configurar AWS_ROLE_ARN)
     if: false  # Temporalmente deshabilitado hasta configurar secrets de AWS
-    
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
-      
+      run: |
+        git clone https://github.com/${{ github.repository }}.git .
+        git checkout ${{ github.sha }}
+
     - name: Configure AWS credentials using OIDC
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-        audience: sts.amazonaws.com
-        role-session-name: GitHubActions-${{ github.run_id }}
-        aws-region: ${{ env.AWS_REGION }}
-        
+      run: |
+        # Configurar AWS credentials usando OIDC
+        # Nota: Requiere configuración de AWS_ROLE_ARN en secrets
+        echo "Configurando AWS credentials..."
+        # aws sts assume-role-with-web-identity --role-arn ${{ secrets.AWS_ROLE_ARN }} --role-session-name GitHubActions-${{ github.run_id }} --web-identity-token $ACTIONS_ID_TOKEN_REQUEST_TOKEN
+
     - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
-        
+      run: |
+        python3 --version
+        python3 -m pip install --upgrade pip
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install awscli
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
+
     - name: Build application
       run: |
         # Add your build steps here
         echo "Building application..."
-        
+
     - name: Deploy to AWS Lambda (example)
       run: |
         # Example deployment - replace with your actual deployment
         echo "Deploying to AWS Lambda..."
         # aws lambda update-function-code --function-name my-function --zip-file fileb://deployment.zip
-        
+
     - name: Deploy to ECS (example)
       run: |
         # Example ECS deployment
         echo "Deploying to ECS..."
         # aws ecs update-service --cluster my-cluster --service my-service --force-new-deployment
-        
+
   deploy-azure:
     runs-on: ubuntu-latest
     environment: production
     if: false  # Disabled by default, enable as needed
-    
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
-      
+      run: |
+        git clone https://github.com/${{ github.repository }}.git .
+        git checkout ${{ github.sha }}
+
     - name: Azure Login using OIDC
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        
+      run: |
+        # Azure login usando OIDC
+        # Nota: Requiere configuración de AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+        echo "Configurando Azure login..."
+        # az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+
     - name: Deploy to Azure App Service
       run: |
         echo "Deploying to Azure..."
         # Add Azure deployment commands here
-        
+
   deploy-gcp:
     runs-on: ubuntu-latest
     environment: production
     if: false  # Disabled by default, enable as needed
-    
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
-      
+      run: |
+        git clone https://github.com/${{ github.repository }}.git .
+        git checkout ${{ github.sha }}
+
     - name: Authenticate to Google Cloud using OIDC
-      uses: google-github-actions/auth@v3
-      with:
-        workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-        service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-        
+      run: |
+        # Autenticación a Google Cloud usando OIDC
+        # Nota: Requiere configuración de GCP_WORKLOAD_IDENTITY_PROVIDER y GCP_SERVICE_ACCOUNT
+        echo "Configurando GCP authentication..."
+        # gcloud auth login --cred-file=<(echo '${{ secrets.GCP_SA_KEY }}')
+
     - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v3
-      
+      run: |
+        # Instalar Google Cloud SDK
+        echo "Instalando Google Cloud SDK..."
+        # curl https://sdk.cloud.google.com | bash
+        # exec -l $SHELL
+
     - name: Deploy to Google Cloud Run
       run: |
         echo "Deploying to GCP..."

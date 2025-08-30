@@ -17,16 +17,18 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v5
+      run: |
+        git clone https://github.com/${{ github.repository }}.git .
+        git checkout ${{ github.sha }}
 
     - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ env.PYTHON_VERSION }}
+      run: |
+        # Instalar Python usando el sistema
+        python3 --version
+        python3 -m pip install --upgrade pip
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
         pip install ruff mypy black isort pytest pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f pyproject.toml ]; then pip install -e .; fi
