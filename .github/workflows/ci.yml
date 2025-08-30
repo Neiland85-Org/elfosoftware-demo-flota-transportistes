@@ -141,12 +141,21 @@ jobs:
       - name: Backend tests (pytest)
         run: |
           if [ -d apps/backend ]; then
-            echo "Ejecutando pytest..."
-            echo "Running pytest..."
-            pytest -q
+            echo "🚀 Ejecutando tests del backend..."
+            echo "🚀 Running backend tests..."
+            cd apps/backend
+            # Instalar dependencias del backend
+            if [ -f pyproject.toml ]; then
+              echo "📦 Instalando dependencias del backend..."
+              pip install -e .
+              pip install -e ".[dev]"
+            fi
+            # Ejecutar tests con configuración del pyproject.toml
+            echo "🧪 Ejecutando pytest..."
+            pytest tests/ -v --tb=short --cov=src --cov-report=term-missing
           else
-            echo "apps/backend no existe, omitido."
-            echo "apps/backend not present, skipped."
+            echo "📭 apps/backend no existe, tests omitidos."
+            echo "📭 apps/backend not present, tests skipped."
           fi
 
       - name: Setup Node
