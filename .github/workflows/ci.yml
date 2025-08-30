@@ -130,6 +130,12 @@ jobs:
             echo "[Installing dependencies declared in pyproject with dev extras]"
             pip install -e ".[dev]"
           fi
+          # Instalar el paquete del backend si existe
+          if [ -f apps/backend/pyproject.toml ]; then
+            echo "[Instalando paquete del backend]"
+            echo "[Installing backend package]"
+            cd apps/backend && pip install -e ".[dev]" && cd ../..
+          fi
           # Instalar herramientas de desarrollo (después de las dependencias del proyecto)
           pip install pre-commit ruff black pytest
 
@@ -147,7 +153,12 @@ jobs:
           if [ -d tests ]; then
             echo "Ejecutando pytest..."
             echo "Running pytest..."
-            export PYTHONPATH="$PWD/src:$PWD/apps/backend/src:$PYTHONPATH"
+            echo "PYTHONPATH: $PYTHONPATH"
+            export PYTHONPATH="$PWD/src:$PWD/apps/backend/src:$PWD:$PYTHONPATH"
+            echo "Updated PYTHONPATH: $PYTHONPATH"
+            # Verificar que podemos importar los módulos
+            python -c "import sys; print('Python path:'); [print(p) for p in sys.path if 'src' in p or 'backend' in p]"
+            python -c "from elfosoftware_flota.domain.entities.flota import Flota; print('Import test successful')"
             pytest -q
           else
             echo "tests/ no existe, omitido."
