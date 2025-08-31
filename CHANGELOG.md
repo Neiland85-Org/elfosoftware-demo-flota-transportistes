@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.4.2...v0.4.3) (2025-08-31)
+
+
+### Bug Fixes
+
+* Resolve frontend build error - clean rebuild and fix hooks import ([ee75d75](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/commit/ee75d75fe97e419460b7996d9495fa44057e6959))
+
 ## [0.4.2](https://github.com/Neiland85-Org/elfosoftware-demo-flota-transportistes/compare/v0.4.1...v0.4.2) (2025-08-30)
 
 
