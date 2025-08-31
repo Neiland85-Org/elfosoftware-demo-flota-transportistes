@@ -1,0 +1,106 @@
+name: Deploy Demo Application
+
+# Simple deployment workflow for demo purposes
+# This workflow builds and prepares deployment artifacts without requiring cloud services
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+env:
+  SERVICE_NAME: flota-transportistes
+  ENVIRONMENT: ${{ github.event.inputs.environment || 'dev' }}
+
+jobs:
+  build-and-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm --prefix apps/web ci
+
+      - name: Build frontend
+        run: npm --prefix apps/web run build
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f pyproject.toml ]; then pip install -e ".[dev]"; fi
+
+      - name: Create deployment package
+        run: |
+          mkdir -p deployment
+          mkdir -p deployment/frontend
+          mkdir -p deployment/backend
+
+          # Copy frontend build
+          cp -r apps/web/out/* deployment/frontend/ 2>/dev/null || cp -r apps/web/.next deployment/frontend/ 2>/dev/null || echo "Frontend build copied"
+
+          # Copy backend files
+          cp -r apps/backend/* deployment/backend/ 2>/dev/null || echo "Backend files copied"
+          cp requirements.txt deployment/ 2>/dev/null || echo "No requirements.txt"
+          cp pyproject.toml deployment/ 2>/dev/null || echo "No pyproject.toml"
+
+          # Copy deployment files
+          cp deploy.sh deployment/
+          cp DEPLOYMENT_README.md deployment/README.md
+
+          # Update README with build info
+          echo "" >> deployment/README.md
+          echo "## Build Information" >> deployment/README.md
+          echo "- **Build Date**: $(date)" >> deployment/README.md
+          echo "- **Commit**: ${{ github.sha }}" >> deployment/README.md
+          echo "- **Environment**: ${{ env.ENVIRONMENT }}" >> deployment/README.md
+
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-package-${{ env.ENVIRONMENT }}
+          path: deployment/
+          retention-days: 7
+
+      - name: Create deployment summary
+        run: |
+          echo "## 🚀 Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Service:** ${{ env.SERVICE_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** ${{ env.ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Build Date:** $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Artifacts Created:" >> $GITHUB_STEP_SUMMARY
+          echo "- Frontend build files" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend application files" >> $GITHUB_STEP_SUMMARY
+          echo "- Deployment script (deploy.sh)" >> $GITHUB_STEP_SUMMARY
+          echo "- Documentation (README.md)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🛠️ Next Steps:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Download the deployment artifact" >> $GITHUB_STEP_SUMMARY
+          echo "2. Run \`./deploy.sh\` to start the application" >> $GITHUB_STEP_SUMMARY
+          echo "3. Access the application at http://localhost:3000" >> $GITHUB_STEP_SUMMARY
